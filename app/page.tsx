@@ -18,7 +18,7 @@ const skills = [
 export default function Home() {
   return <main>
     <nav className="nav shell" aria-label="Main navigation">
-      <a className="brand fullBrand" href="#top" aria-label="Manjit Rana home">Manjit Rana<span>.</span></a>
+      <a className="brand brandIdentity" href="#top" aria-label="Manjit Rana home"><img className="brandPhoto" src="/manjit-logo.jpeg" alt="" /><span className="brandName">Manjit Rana<i>.</i></span></a>
       <div className="navLinks"><a href="#work"><BriefcaseBusiness size={15} /> Work</a><a href="#about"><UserRound size={15} /> About</a><a href="#contact"><Mail size={15} /> Contact</a></div>
       <a className="navCta" href="mailto:rnmanjit192@gmail.com">Let&apos;s talk <ExternalLink size={16} /></a>
     </nav>
