@@ -1,0 +1,65 @@
+import ContactForm from "./ContactForm";
+import { Activity, ArrowDown, ArrowUp, BriefcaseBusiness, Code2, Cpu, Database, ExternalLink, Facebook, Figma, Github, Globe2, GraduationCap, House, Layers3, Linkedin, Mail, MapPin, Palette, SearchCheck, Server, ShieldCheck, Sparkles, Terminal, UserRound, Wifi, Zap } from "lucide-react";
+import { FaTiktok } from "react-icons/fa6";
+
+const projects = [
+  { number: "01", title: "KothaKhoj Nepal", tag: "Room Discovery", status: "Live project", description: "A Nepal-focused room and rental discovery platform that helps people find accommodation and compare available room sources more easily.", stack: ["Next.js", "Google Auth", "Supabase", "SEO"], accent: "coral", href: "https://kothakhoj.manjitrana.com.np", image: "/projects/kothakhoj.png", linkLabel: "Visit live website" },
+  { number: "02", title: "Nepal Job Finder", tag: "Opportunity Platform", status: "Under development", description: "A developing platform designed to organize trustworthy government, NGO/INGO, remote and entry-level job opportunities for people across Nepal.", stack: ["Product Design", "Job Aggregation", "Admin Tools"], accent: "violet", image: "/projects/ai-jobs.png", linkLabel: "Coming soon" },
+];
+
+const skills = [
+  { name: "Next.js", icon: Layers3 }, { name: "React", icon: Code2 },
+  { name: "TypeScript", icon: Code2 }, { name: "Tailwind CSS", icon: Palette },
+  { name: "Supabase", icon: Database }, { name: "Vercel", icon: Server },
+  { name: "Git & GitHub", icon: Github }, { name: "Responsive Design", icon: Globe2 },
+  { name: "SEO", icon: SearchCheck }, { name: "UI/UX", icon: Figma },
+];
+
+export default function Home() {
+  return <main>
+    <nav className="nav shell" aria-label="Main navigation">
+      <a className="brand fullBrand" href="#top" aria-label="Manjit Rana home">Manjit Rana<span>.</span></a>
+      <div className="navLinks"><a href="#work"><BriefcaseBusiness size={15} /> Work</a><a href="#about"><UserRound size={15} /> About</a><a href="#contact"><Mail size={15} /> Contact</a></div>
+      <a className="navCta" href="mailto:rnmanjit192@gmail.com">Let&apos;s talk <ExternalLink size={16} /></a>
+    </nav>
+
+    <section className="hero shell" id="top">
+      <div className="heroEyebrow"><span className="statusDot" /> Available for freelance projects <span className="systemOnline"><Wifi size={13} /> SYSTEM ONLINE</span></div>
+      <h1>I build digital products<br /><em>with purpose.</em></h1>
+      <div className="heroBottom">
+        <p>I&apos;m <strong>Manjit Rana</strong>, a BIT student and web developer from Nepal. I turn useful ideas into fast, thoughtful and accessible digital experiences.</p>
+        <a className="roundLink" href="#work" aria-label="See selected work"><span>See my work</span><ArrowDown size={25} /></a>
+      </div>
+      <div className="digitalRail" aria-label="Professional highlights"><span><Code2 size={17} /><b>Web</b><small>Development</small></span><span><Globe2 size={17} /><b>Nepal</b><small>Digital products</small></span><span><ShieldCheck size={17} /><b>Reliable</b><small>Clear project status</small></span></div>
+      <div className="heroGrid" aria-hidden="true"><span className="shape shapeOne" /><span className="shape shapeTwo" /><span className="shape shapeThree" /><span className="codeCard"><div className="terminalTop"><i /><i /><i /><small><Terminal size={12} /> portfolio.tsx</small></div><code><em>const</em> builder = &#123;<br />&nbsp;&nbsp;name: &quot;Manjit Rana&quot;,<br />&nbsp;&nbsp;mission: &quot;build → impact&quot;<br />&#125;;</code></span></div>
+    </section>
+
+    <section className="marquee" aria-label="Areas of expertise"><div>WEB DEVELOPMENT <span>✦</span> PRODUCT DESIGN <span>✦</span> PROBLEM SOLVING <span>✦</span> DIGITAL EXPERIENCES <span>✦</span> WEB DEVELOPMENT</div></section>
+
+    <section className="work shell" id="work">
+      <div className="sectionHead"><div><span className="kicker">Selected work</span><h2>Products I&apos;m building</h2></div><p>Two focused Nepal-first products with clear, honest development status and practical goals.</p></div>
+      <div className="projectGrid">
+        {projects.map(project => <article className={`project ${project.accent}`} key={project.title}>
+          <div className="projectTop"><span>{project.number}</span><span className="tagWithIcon">{project.href ? <House size={13} /> : <BriefcaseBusiness size={13} />}{project.tag}</span><strong className={`statusBadge ${project.href ? "isLive" : "isBuilding"}`}>{project.status}</strong></div>
+          <div className="projectVisual" aria-hidden="true">{project.image ? <img src={project.image} alt="" /> : <div className="miniWindow"><i /><i /><i /><b>{project.title.slice(0,2).toUpperCase()}</b><span /><span /></div>}<span className="visualHud"><Activity size={13} /> {project.href ? "LIVE / STABLE" : "BUILD / ACTIVE"}</span></div>
+          <h3>{project.title}</h3><p>{project.description}</p>
+          <div className="projectFoot"><ul>{project.stack.map(item => <li key={item}>{item}</li>)}</ul>{project.href ? <a className="projectLink" href={project.href} target="_blank" rel="noreferrer" aria-label={`${project.linkLabel}: ${project.title}`}><small>{project.linkLabel}</small><ExternalLink size={18} /></a> : <span className="comingSoon"><small>{project.linkLabel}</small><Sparkles size={16} /></span>}</div>
+        </article>)}
+      </div>
+    </section>
+
+    <section className="about" id="about"><div className="shell aboutGrid">
+      <div className="portrait"><img src="/manjit-rana.jpg" alt="Manjit Rana, web developer from Nepal" /><span><MapPin size={15} /> Based in Nepal</span></div>
+      <div className="aboutCopy"><span className="kicker">A little about me</span><h2>Curious mind.<br />Practical builder.</h2>
+        <p className="lead">I study Bachelor of Information Technology at Kailali Multiple Campus, Far Western University. I enjoy learning by building—then improving until the result feels simple and useful.</p>
+        <p>My work combines front-end development, product thinking and hands-on deployment. I&apos;m especially interested in education, local discovery, jobs and tools that make everyday tasks easier.</p>
+        <div className="facts"><div><BriefcaseBusiness size={20} /><strong>2</strong><span>Focused products</span></div><div><GraduationCap size={20} /><strong>BIT</strong><span>Current degree</span></div><div><MapPin size={20} /><strong>NP</strong><span>Based in Nepal</span></div></div>
+      </div>
+    </div></section>
+
+    <section className="skills shell"><div className="sectionHead compact"><div><span className="kicker">Digital toolkit</span><h2>Technology I work with</h2></div><div className="toolkitChip"><Cpu size={17} /> Modern web stack <Zap size={15} /></div></div><div className="skillList">{skills.map((skill,index)=>{const Icon=skill.icon;return <span key={skill.name}><b>{String(index+1).padStart(2,"0")}</b><Icon size={21} />{skill.name}<small>READY</small></span>})}</div></section>
+
+    <section className="contact" id="contact"><div className="shell contactInner"><div className="contactIntro"><span className="kicker">Have a project in mind?</span><h2>Let&apos;s make something<br /><em>worth sharing.</em></h2><p>Share a few details and I&apos;ll get back to you. You can also email me directly at <a href="mailto:rnmanjit192@gmail.com">rnmanjit192@gmail.com</a>.</p><div className="socialLinks" aria-label="Social profiles"><a href="https://www.linkedin.com/in/kmcmanjeet12/" target="_blank" rel="noreferrer"><Linkedin size={19} /><span><b>LinkedIn</b><small>/kmcmanjeet12</small></span><ExternalLink size={14} /></a><a href="https://www.facebook.com/kmcmanjeet12" target="_blank" rel="noreferrer"><Facebook size={19} /><span><b>Facebook</b><small>/kmcmanjeet12</small></span><ExternalLink size={14} /></a><a href="https://www.tiktok.com/@kanxa_babu9" target="_blank" rel="noreferrer"><FaTiktok size={18} /><span><b>TikTok</b><small>@kanxa_babu9</small></span><ExternalLink size={14} /></a></div></div><ContactForm /></div></section>
+    <footer className="shell"><div className="brand fullBrand">Manjit Rana<span>.</span></div><p>© 2026 Manjit Rana. Accurate project status, genuine work.</p><div><a href="https://github.com/manjitkalpana" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17} /></a><a href="https://www.linkedin.com/in/kmcmanjeet12/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={17} /></a><a href="https://www.facebook.com/kmcmanjeet12" target="_blank" rel="noreferrer" aria-label="Facebook"><Facebook size={17} /></a><a href="https://www.tiktok.com/@kanxa_babu9" target="_blank" rel="noreferrer" aria-label="TikTok"><FaTiktok size={17} /></a><a href="#top">Back to top <ArrowUp size={16} /></a></div></footer>
+  </main>;
+}
