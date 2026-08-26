@@ -1,4 +1,5 @@
 import ContactForm from "./ContactForm";
+import SoundToggle from "./SoundToggle";
 import { Activity, ArrowDown, ArrowUp, BriefcaseBusiness, Code2, Cpu, Database, ExternalLink, Facebook, Figma, Github, Globe2, GraduationCap, House, Layers3, Linkedin, Mail, MapPin, Palette, SearchCheck, Server, ShieldCheck, Sparkles, Terminal, UserRound, Wifi, Zap } from "lucide-react";
 import { FaTiktok } from "react-icons/fa6";
 
@@ -35,6 +36,7 @@ const skills = [
 
 export default function Home() {
   return <main>
+    <SoundToggle />
     <nav className="nav shell" aria-label="Main navigation">
       <a className="brand brandIdentity" href="#top" aria-label="Manjit Rana home"><img className="brandPhoto" src="/manjit-logo.jpeg" alt="" /><span className="brandName">Manjit Rana<i>.</i></span></a>
       <div className="navLinks"><a href="#work"><BriefcaseBusiness size={15} /> Work</a><a href="#about"><UserRound size={15} /> About</a><a href="#contact"><Mail size={15} /> Contact</a></div>
