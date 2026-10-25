@@ -52,3 +52,63 @@
 @media(max-width:650px){.creativeShell{width:calc(100% - 32px)}.creativeNav{height:73px;gap:10px}.creativeBrand{font-size:31px}.creativeMenu{display:grid;place-items:center;width:36px;height:36px;margin-left:auto;border:1px solid var(--line);border-radius:50%;background:transparent;color:var(--ink)}.creativeNavLinks{display:none;position:absolute;top:66px;left:0;right:0;padding:12px;border:1px solid var(--line);border-radius:9px;background:var(--panel);box-shadow:0 15px 35px rgba(0,0,0,.12);margin:0;align-items:stretch;flex-direction:column}.creativeNavLinks.creativeMenuOpen{display:flex}.creativeNavLinks a{padding:12px}.creativeNavActions{gap:5px}.creativeIconButton{min-height:35px;padding:0 8px;font-size:10px}.creativeNavCta{padding:11px 12px;font-size:10px;gap:5px}.creativeHero{padding-top:25px;padding-bottom:42px}.creativeHeroLabel{font-size:7px;padding-bottom:15px}.creativeHeroGrid{grid-template-columns:1fr;gap:31px;padding:43px 0 35px}.creativeHero h1{font-size:clamp(61px,14vw,85px);margin-bottom:22px}.creativeSummary{font-size:13px}.creativeArtwork{height:290px}.creativePrinciples span{gap:7px;padding:13px 4px 13px 0;font-size:7px;letter-spacing:.03em}.creativePrinciples span+span{padding-left:8px}.creativePrinciples b{font-size:8px}.creativeScrollHint{margin-top:16px}.creativeWork,.creativeSkills{padding:73px 0}.creativeSectionHead{display:block;margin-bottom:25px}.creativeSectionHead h2{font-size:43px}.creativeSectionHead>p{margin-top:14px;font-size:11px}.creativeProjectGrid{grid-template-columns:1fr;gap:15px}.creativeProjectArt{height:210px}.creativeProjectInfo{padding:20px 17px}.creativeProjectInfo h3{font-size:25px}.creativeProjectDesc{min-height:0}.creativeAbout{padding:72px 0}.creativeAboutGrid{grid-template-columns:1fr;gap:30px}.creativeMonogram{height:215px;font-size:125px}.creativeAboutCopy h2{font-size:43px}.creativeLead{font-size:15px!important}.creativeFacts>div{grid-template-columns:110px 1fr}.creativeSkill{grid-template-columns:23px 23px 1fr 16px;gap:9px;padding:15px 3px}.creativeSkill strong{font-size:14px}.creativeSkillGroup{display:none}.creativeSkillFooter{font-size:7px;letter-spacing:.04em}.creativeContact{padding:70px 0}.creativeContactGrid{grid-template-columns:1fr;gap:40px}.creativeContactIntro h2{font-size:62px}.creativePortfolio .contactForm{padding:19px;box-shadow:6px 6px 0 var(--accent2)}.creativePortfolio .contactForm .formRow{grid-template-columns:1fr;gap:20px}.creativeFooter{align-items:flex-start;flex-wrap:wrap;padding-top:22px;padding-bottom:22px}.creativeFooter>p{order:3;width:100%}.creativeFooter>div{margin-left:auto;gap:10px;font-size:7px}}
 @media(max-width:390px){.creativeNavActions{gap:4px}.creativeIconButton{padding:0 6px}.creativeNavCta{font-size:9px;padding:10px}.creativeNavCta svg{display:none}.creativeHero h1{font-size:57px}.creativeLocation{font-size:6px}.creativePrinciples span{font-size:6px}.creativeSkillFooter{flex-direction:column;gap:9px}}
 @media(prefers-reduced-motion:reduce){.creativePortfolio *, .creativePortfolio *::before,.creativePortfolio *::after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+
+
+/* Design refinement pass — editorial polish, tactile details, stronger interaction states */
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+.creativePortfolio{position:relative}
+.creativePortfolio:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;z-index:0;background-image:radial-gradient(var(--muted) .55px,transparent .55px);background-size:6px 6px;mask-image:linear-gradient(to bottom,#000,transparent 42%)}
+.creativePortfolio> *{position:relative}
+.creativeNav{position:sticky;top:0;height:76px;padding-inline:18px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom-color:color-mix(in srgb,var(--line) 70%,transparent)}
+.creativeBrand{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border:1px solid var(--line);border-radius:50%;transition:transform .25s,background .25s}
+.creativeBrand:hover{transform:rotate(-9deg);background:var(--accent2);color:#24211f}
+.creativeHeroLabel{padding-top:7px}
+.creativeAvailability{padding:9px 12px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
+.creativeHero h1{max-width:720px;text-wrap:balance}
+.creativeHero h1 em{position:relative;display:inline-block}
+.creativeHero h1 em:after{content:"";position:absolute;left:2px;right:4px;bottom:-9px;height:7px;background:var(--accent2);border-radius:50%;transform:rotate(-2deg);z-index:-1}
+.creativeSummary{font-size:clamp(14px,1.25vw,16px)}
+.creativeArtwork{border-radius:9px;box-shadow:14px 14px 0 color-mix(in srgb,var(--accent) 18%,transparent);transition:transform .35s,box-shadow .35s}
+.creativeArtwork:hover{transform:translate(-3px,-3px);box-shadow:19px 19px 0 color-mix(in srgb,var(--accent) 25%,transparent)}
+.creativeArtScene:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(120deg,transparent 35%,rgba(255,255,255,.22) 48%,transparent 60%);transform:translateX(-100%);animation:creativeShimmer 8s ease-in-out infinite}
+.creativePrinciples span{transition:color .2s}
+.creativePrinciples span:hover{color:var(--ink)}
+.creativeSectionHead{position:relative}
+.creativeSectionHead:after{content:"✳";font-size:25px;color:var(--accent);position:absolute;right:0;top:0;opacity:.85;animation:creativeSpin 22s linear infinite}
+.creativeProject{border-radius:10px;box-shadow:0 3px 0 color-mix(in srgb,var(--ink) 5%,transparent)}
+.creativeProjectArt{transition:background .3s}
+.creativeProject:hover .creativeProjectArt{background-color:color-mix(in srgb,var(--accent) 12%,var(--panel))}
+.creativeProjectSymbol{transition:transform .35s}
+.creativeProject:hover .creativeProjectSymbol{transform:scale(1.06) rotate(-3deg)}
+.creativeProject-violet:hover .creativeProjectArt{background-color:#c5b8ff}
+.creativeProjectCorner{transition:transform .25s,background .25s}
+.creativeProject:hover .creativeProjectCorner{transform:rotate(45deg);background:#fff8e9}
+.creativeTags span{transition:background .2s,border-color .2s,color .2s}
+.creativeTags span:hover{background:var(--accent2);border-color:var(--accent2);color:#24211f}
+.creativeAboutVisual{position:relative}
+.creativeMonogram{border-radius:8px;box-shadow:12px 12px 0 color-mix(in srgb,var(--ink) 8%,transparent)}
+.creativeMonogram span:nth-child(2){text-shadow:3px 3px 0 #292720}
+.creativeAboutCopy .creativeEyebrow{margin-bottom:18px}
+.creativeFacts>div{transition:transform .2s,border-color .2s}
+.creativeFacts>div:hover{transform:translateY(-3px);border-color:var(--accent)}
+.creativeSkill{position:relative}
+.creativeSkill:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);transform:scaleY(0);transform-origin:bottom;transition:transform .22s}
+.creativeSkill:hover:before{transform:scaleY(1)}
+.creativeContact{position:relative;isolation:isolate}
+.creativeContact:before{content:"✳";position:absolute;right:5%;top:2%;font-size:clamp(100px,22vw,300px);line-height:1;color:rgba(255,255,255,.035);pointer-events:none;z-index:-1;animation:creativeSpin 60s linear infinite}
+.creativeContactIntro h2{max-width:650px;text-wrap:balance}
+.creativeEmail{border-bottom:1px solid rgba(197,244,123,.45);padding-bottom:5px;transition:border-color .2s}
+.creativeEmail:hover{border-color:var(--accent2)}
+.creativePortfolio a:focus-visible,.creativePortfolio button:focus-visible,.creativePortfolio input:focus-visible,.creativePortfolio textarea:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.creativePortfolio button:active,.creativePortfolio .creativePrimary:active{transform:scale(.98)}
+.creativeFooter{border-top:1px solid var(--line)}
+@keyframes creativeShimmer{0%,65%,100%{transform:translateX(-100%)}82%{transform:translateX(100%)}}
+@media(max-width:650px){
+  .creativeNav{height:68px;padding-inline:0}
+  .creativeBrand{width:39px;height:39px;font-size:29px}
+  .creativeHero h1 em:after{height:5px;bottom:-6px}
+  .creativeArtwork{box-shadow:7px 7px 0 color-mix(in srgb,var(--accent) 20%,transparent)}
+  .creativeSectionHead:after{font-size:19px;top:-3px}
+  .creativeContact:before{right:-7%;top:20%;font-size:150px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.creativeArtScene:after{display:none}}
