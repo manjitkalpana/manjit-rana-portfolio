@@ -24,8 +24,6 @@ const projects = [
     linkLabel: "Visit live website",
   },
   { number: "02", title: "Nepal Job Finder", tag: "Opportunity Platform", status: "Under development", description: "A developing platform designed to organize trustworthy government, NGO/INGO, remote and entry-level job opportunities for people across Nepal.", stack: ["Product Design", "Job Aggregation", "Admin Tools"], accent: "violet", image: "/projects/ai-jobs.png", linkLabel: "Coming soon" },
-  { number: "03", title: "Codveda Internship Portfolio", tag: "Internship Website", status: "Published project", description: "A static portfolio website presenting Manjit Rana’s web development internship experience at Codveda Technologies, including professional environment, collaboration, and work highlights.", stack: ["HTML", "CSS", "Responsive UI"], accent: "coral", href: "https://github.com/manjitkalpana/codveda-internship-site", linkLabel: "View on GitHub" },
-  { number: "04", title: "VidyCut", tag: "Video Editor", status: "Working project", description: "A free, local-first browser video editor with timeline editing, local project storage, effects, text layers, keyframes, and video export using WebCodecs or FFmpeg.", stack: ["React", "TypeScript", "Vite", "Zustand", "FFmpeg"], accent: "violet", href: "https://github.com/manjitkalpana/VidyCut", linkLabel: "View on GitHub" },
 ];
 
 const skills = [
@@ -59,7 +57,7 @@ export default function Home() {
     <section className="marquee" aria-label="Areas of expertise"><div>WEB DEVELOPMENT <span>✦</span> PRODUCT DESIGN <span>✦</span> PROBLEM SOLVING <span>✦</span> DIGITAL EXPERIENCES <span>✦</span> WEB DEVELOPMENT</div></section>
 
     <section className="work shell" id="work">
-      <div className="sectionHead"><div><span className="kicker">Selected work</span><h2>Products I&apos;m building</h2></div><p>Four focused digital products with clear, honest development status and practical goals.</p></div>
+      <div className="sectionHead"><div><span className="kicker">Selected work</span><h2>Products I&apos;m building</h2></div><p>Two selected projects focused on useful digital tools and opportunities for people in Nepal.</p></div>
       <div className="projectGrid">
         {projects.map(project => <article className={`project ${project.accent}`} key={project.title}>
           <div className="projectTop"><span>{project.number}</span><span className="tagWithIcon">{project.href ? <House size={13} /> : <BriefcaseBusiness size={13} />}{project.tag}</span><strong className={`statusBadge ${project.href ? "isLive" : "isBuilding"}`}>{project.status}</strong></div>
@@ -84,7 +82,7 @@ export default function Home() {
           <div><Globe2 size={18} /><span><small>Languages</small><strong>Nepali · English · Hindi</strong><em>Professional communication</em></span></div>
           <a href="https://www.freelancer.si/u/rnmanjit2844" target="_blank" rel="noreferrer"><ExternalLink size={18} /><span><small>Freelancer</small><strong>@rnmanjit2844</strong><em>$10 USD / hour profile</em></span></a>
         </div>
-        <div className="facts"><div><BriefcaseBusiness size={20} /><strong>4</strong><span>Focused products</span></div><div><GraduationCap size={20} /><strong>BIT</strong><span>Current degree</span></div><div><MapPin size={20} /><strong>NP</strong><span>Based in Nepal</span></div></div>
+        <div className="facts"><div><BriefcaseBusiness size={20} /><strong>2</strong><span>Selected projects</span></div><div><GraduationCap size={20} /><strong>BIT</strong><span>Current degree</span></div><div><MapPin size={20} /><strong>NP</strong><span>Based in Nepal</span></div></div>
       </div>
     </div></section>
 
