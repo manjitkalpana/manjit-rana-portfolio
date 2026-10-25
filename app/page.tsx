@@ -1,53 +1,66 @@
 import ContactForm from "./ContactForm";
-import { Activity, ArrowDown, ArrowUp, BriefcaseBusiness, Code2, Cpu, Database, ExternalLink, Facebook, Figma, Github, Globe2, GraduationCap, House, Layers3, Linkedin, Mail, MapPin, Palette, SearchCheck, Server, ShieldCheck, Sparkles, Terminal, UserRound, Wifi, Zap } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, BriefcaseBusiness, Code2, Database, ExternalLink, Facebook, Github, Globe2, Layers3, Linkedin, Mail, MapPin, Palette, SearchCheck, Server, Sparkles, Terminal, Workflow, Zap } from "lucide-react";
 import { FaTiktok } from "react-icons/fa6";
 
 const skills = [
-  { name: "Next.js", icon: Layers3 }, { name: "React", icon: Code2 },
-  { name: "TypeScript", icon: Code2 }, { name: "Tailwind CSS", icon: Palette },
-  { name: "Supabase", icon: Database }, { name: "Vercel", icon: Server },
-  { name: "Git & GitHub", icon: Github }, { name: "Responsive Design", icon: Globe2 },
-  { name: "SEO", icon: SearchCheck }, { name: "UI/UX", icon: Figma },
+  { name: "Next.js", group: "Framework", icon: Layers3 },
+  { name: "React", group: "Frontend", icon: Code2 },
+  { name: "TypeScript", group: "Language", icon: Terminal },
+  { name: "Tailwind CSS", group: "Styling", icon: Palette },
+  { name: "Supabase", group: "Backend", icon: Database },
+  { name: "Vercel", group: "Deployment", icon: Server },
+  { name: "Git & GitHub", group: "Workflow", icon: Github },
+  { name: "SEO & UI/UX", group: "Experience", icon: SearchCheck },
+];
+
+const projects = [
+  { number: "01", name: "KothaKhoj Nepal", type: "PROPERTY DISCOVERY", status: "IN DEVELOPMENT", description: "A simpler way to discover rooms, rentals and stays across Nepal, designed around the needs of local people.", tags: ["Next.js", "Supabase", "Search"], href: "https://kothakhoj.manjitrana.com.np", label: "Explore project", tone: "mint" },
+  { number: "02", name: "Nepal Job Finder", type: "CAREER & COMMUNITY", status: "IN DEVELOPMENT", description: "A concept for making job opportunities easier to discover, understand and access for people across Nepal.", tags: ["Web app", "Accessibility", "Nepal"], href: "mailto:rnmanjit192@gmail.com?subject=Nepal%20Job%20Finder", label: "Discuss project", tone: "lilac" },
 ];
 
 export default function Home() {
-  return <main>
+  return <main className="portfolio">
     <nav className="nav shell" aria-label="Main navigation">
-      <a className="brand brandIdentity" href="#top" aria-label="Manjit Rana home"><span className="brandName">Manjit Rana<i>.</i></span></a>
-      <div className="navLinks"><a href="#about"><UserRound size={15} /> About</a><a href="#skills"><Code2 size={15} /> Skills</a><a href="#contact"><Mail size={15} /> Contact</a></div>
-      <a className="navCta" href="mailto:rnmanjit192@gmail.com">Let&apos;s talk <ExternalLink size={16} /></a>
+      <a className="brand brandIdentity" href="#top" aria-label="Manjit Rana home"><span className="brandName">manjit<span className="brandDot">.</span></span></a>
+      <div className="navLinks"><a href="#work">Work</a><a href="#about">About</a><a href="#skills">Stack</a></div>
+      <a className="navCta" href="#contact">Let&apos;s talk <ArrowUpRight size={16} /></a>
     </nav>
 
     <section className="hero shell" id="top">
-      <div className="heroEyebrow"><span className="statusDot" /> Available for freelance projects <span className="systemOnline"><Wifi size={13} /> SYSTEM ONLINE</span></div>
-      <h1>I build digital products<br /><em>with purpose.</em></h1>
-      <div className="heroBottom">
-        <p>I&apos;m <strong>Manjit Rana</strong>, a BIT student and web developer from Nepal. I turn useful ideas into fast, thoughtful and accessible digital experiences.</p>
-        <a className="roundLink" href="#about" aria-label="Learn about me"><span>About me</span><ArrowDown size={25} /></a>
+      <div className="heroTopline"><span className="availability"><i /> OPEN TO FREELANCE</span><span className="heroLocation"><MapPin size={14} /> NEPAL · UTC+5:45</span></div>
+      <div className="heroMain">
+        <div className="heroCopy">
+          <p className="heroIntro">INDEPENDENT DEVELOPER & DIGITAL CREATOR</p>
+          <h1>Ideas into<br /><em>useful things.</em></h1>
+          <p className="heroSummary">I&apos;m Manjit Rana — a BIT student and web developer building thoughtful digital experiences for real people, with a focus on clarity, speed and usefulness.</p>
+          <div className="heroActions"><a className="primaryButton" href="#work">Explore my work <ArrowDownRight size={17} /></a><a className="textButton" href="mailto:rnmanjit192@gmail.com">Get in touch <ArrowUpRight size={16} /></a></div>
+        </div>
+        <div className="heroArtwork" aria-label="Abstract digital design illustration">
+          <div className="artTop"><span>DESIGN / BUILD / REFINE</span><span>MR—026</span></div>
+          <div className="artOrb"><div className="orbCore" /><span className="orbLabel labelA">THOUGHTFUL<br />BY DESIGN</span><span className="orbLabel labelB">BUILT TO WORK ↗</span></div>
+          <div className="artBottom"><span>Curiosity is the starting point.</span><span><Sparkles size={14} /> 01 / 03</span></div>
+        </div>
       </div>
-      <div className="digitalRail" aria-label="Professional highlights"><span><Code2 size={17} /><b>Web</b><small>Development</small></span><span><Globe2 size={17} /><b>Nepal</b><small>Digital products</small></span><span><ShieldCheck size={17} /><b>Reliable</b><small>Clear project status</small></span></div>
-      <div className="heroGrid" aria-hidden="true"><span className="shape shapeOne" /><span className="shape shapeTwo" /><span className="shape shapeThree" /><span className="codeCard"><div className="terminalTop"><i /><i /><i /><small><Terminal size={12} /> portfolio.tsx</small></div><code><em>const</em> builder = &#123;<br />&nbsp;&nbsp;name: &quot;Manjit Rana&quot;,<br />&nbsp;&nbsp;mission: &quot;build → impact&quot;<br />&#125;;</code></span></div>
+      <div className="heroMeta"><span><b>01</b> BUILD WITH INTENTION</span><span><b>02</b> KEEP IT HUMAN</span><span><b>03</b> SHIP & IMPROVE</span></div>
     </section>
 
-    <section className="marquee" aria-label="Areas of expertise"><div>WEB DEVELOPMENT <span>✦</span> PRODUCT DESIGN <span>✦</span> PROBLEM SOLVING <span>✦</span> DIGITAL EXPERIENCES <span>✦</span> WEB DEVELOPMENT</div></section>
+    <section className="work shell" id="work">
+      <div className="sectionHead"><div><p className="sectionEyebrow">SELECTED PROJECTS / 2026</p><h2>Work in progress<span>.</span></h2></div><p className="sectionNote">A few ideas I&apos;m turning into practical products. Each project is shared with an honest status.</p></div>
+      <div className="projectGrid">{projects.map((project) => <article className={`project project-${project.tone}`} key={project.number}>
+        <div className="projectHeader"><span>PROJECT / {project.number}</span><span className="projectStatus"><i /> {project.status}</span></div>
+        <div className="projectCanvas"><div className="canvasGrid" /><div className="canvasShape"><span>{project.number}</span></div><span className="canvasCaption">{project.type}</span><span className="canvasArrow"><ArrowUpRight size={22} /></span></div>
+        <div className="projectInfo"><p className="projectType">{project.type}</p><h3>{project.name}</h3><p className="projectDescription">{project.description}</p><div className="projectTags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div><a className="projectLink" href={project.href} target={project.href.startsWith("mailto:") ? undefined : "_blank"} rel="noreferrer">{project.label} <ArrowUpRight size={16} /></a></div>
+      </article>)}</div>
+    </section>
 
     <section className="about" id="about"><div className="shell aboutGrid">
-      
-      <div className="aboutCopy"><span className="kicker">A little about me</span><h2>Curious mind.<br />Practical builder.</h2>
-        <p className="lead">I study Bachelor of Information Technology at Kailali Multiple Campus, Far Western University. I enjoy learning by building—then improving until the result feels simple and useful.</p>
-        <p>My work combines front-end development, product thinking and hands-on deployment. I&apos;m especially interested in education, local discovery, jobs and tools that make everyday tasks easier.</p>
-        <div className="experiencePanel" aria-label="Professional profile">
-          <div><BriefcaseBusiness size={18} /><span><small>Experience</small><strong>IT Assistant</strong><em>Beldandi Institute of Technology</em></span></div>
-          <div><Globe2 size={18} /><span><small>Languages</small><strong>Nepali · English · Hindi</strong><em>Professional communication</em></span></div>
-          <a href="https://www.freelancer.si/u/rnmanjit2844" target="_blank" rel="noreferrer"><ExternalLink size={18} /><span><small>Freelancer</small><strong>@rnmanjit2844</strong><em>$10 USD / hour profile</em></span></a>
-        </div>
-        <div className="facts"><div><GraduationCap size={20} /><strong>BIT</strong><span>Current degree</span></div><div><MapPin size={20} /><strong>NP</strong><span>Based in Nepal</span></div></div>
-      </div>
+      <div className="aboutLabel"><p className="sectionEyebrow">A LITTLE ABOUT ME</p><div className="aboutMonogram">M<span>.</span>R</div><p className="aboutCaption">Based in Sudurpashchim, Nepal<br />Building for the wider world.</p></div>
+      <div className="aboutCopy"><h2>Curious by nature.<br /><em>Practical by choice.</em></h2><p className="lead">I enjoy learning by building things that solve real problems — then refining them until they feel clear, useful and easy to use.</p><p>I study Information Technology at Kailali Multiple Campus, Far Western University, and work as an IT Assistant at Beldandi Institute of Technology. I&apos;m especially interested in education, local discovery, jobs and accessible tools.</p><div className="aboutDetails"><div><span>01 / CURRENT FOCUS</span><strong>Web apps & product thinking</strong></div><div><span>02 / LANGUAGES</span><strong>Nepali · English · Hindi</strong></div><div><span>03 / WORK STYLE</span><strong>Curious, honest, iterative</strong></div></div></div>
     </div></section>
 
-    <section className="skills shell" id="skills"><div className="sectionHead compact"><div><span className="kicker">Digital toolkit</span><h2>Technology I work with</h2></div><div className="toolkitChip"><Cpu size={17} /> Modern web stack <Zap size={15} /></div></div><div className="skillList">{skills.map((skill,index)=>{const Icon=skill.icon;return <span key={skill.name}><b>{String(index+1).padStart(2,"0")}</b><Icon size={21} />{skill.name}<small>READY</small></span>})}</div></section>
+    <section className="skills shell" id="skills"><div className="sectionHead"><div><p className="sectionEyebrow">TOOLS OF THE TRADE</p><h2>My working stack<span>.</span></h2></div><p className="sectionNote">A practical toolkit for turning early ideas into responsive, maintainable web experiences.</p></div><div className="skillList">{skills.map((skill, index) => { const Icon = skill.icon; return <div className="skillRow" key={skill.name}><span className="skillNumber">0{index + 1}</span><Icon size={21} strokeWidth={1.6} /><strong>{skill.name}</strong><span className="skillGroup">{skill.group}</span><span className="skillArrow"><ArrowUpRight size={17} /></span></div>; })}</div><div className="skillFoot"><span><Zap size={15} /> ALWAYS LEARNING</span><span><Workflow size={15} /> DESIGN → BUILD → ITERATE</span></div></section>
 
-    <section className="contact" id="contact"><div className="shell contactInner"><div className="contactIntro"><span className="kicker">Have a project in mind?</span><h2>Let&apos;s make something<br /><em>worth sharing.</em></h2><p>Share a few details and I&apos;ll get back to you. You can also email me directly at <a href="mailto:rnmanjit192@gmail.com">rnmanjit192@gmail.com</a>.</p><div className="socialLinks" aria-label="Social profiles"><a href="https://www.linkedin.com/in/kmcmanjeet12/" target="_blank" rel="noreferrer"><Linkedin size={19} /><span><b>LinkedIn</b><small>/kmcmanjeet12</small></span><ExternalLink size={14} /></a><a href="https://www.facebook.com/kmcmanjeet12" target="_blank" rel="noreferrer"><Facebook size={19} /><span><b>Facebook</b><small>/kmcmanjeet12</small></span><ExternalLink size={14} /></a><a href="https://www.tiktok.com/@kanxa_babu9" target="_blank" rel="noreferrer"><FaTiktok size={18} /><span><b>TikTok</b><small>@kanxa_babu9</small></span><ExternalLink size={14} /></a><a href="https://www.freelancer.si/u/rnmanjit2844" target="_blank" rel="noreferrer"><BriefcaseBusiness size={19} /><span><b>Freelancer</b><small>@rnmanjit2844</small></span><ExternalLink size={14} /></a></div></div><ContactForm /></div></section>
-    <footer className="shell"><div className="brand fullBrand">Manjit Rana<span>.</span></div><p>© 2026 Manjit Rana. Accurate project status, genuine work.</p><div><a href="https://github.com/manjitkalpana" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17} /></a><a href="https://www.linkedin.com/in/kmcmanjeet12/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={17} /></a><a href="https://www.facebook.com/kmcmanjeet12" target="_blank" rel="noreferrer" aria-label="Facebook"><Facebook size={17} /></a><a href="https://www.tiktok.com/@kanxa_babu9" target="_blank" rel="noreferrer" aria-label="TikTok"><FaTiktok size={17} /></a><a href="https://www.freelancer.si/u/rnmanjit2844" target="_blank" rel="noreferrer" aria-label="Freelancer"><BriefcaseBusiness size={17} /></a><a href="#top">Back to top <ArrowUp size={16} /></a></div></footer>
+    <section className="contact" id="contact"><div className="shell contactInner"><div className="contactIntro"><p className="sectionEyebrow">HAVE SOMETHING IN MIND?</p><h2>Let&apos;s build<br /><em>what&apos;s next.</em></h2><p>Have a project, a freelance opportunity, or an idea worth exploring? Send a message and let&apos;s start with a conversation.</p><a className="emailLink" href="mailto:rnmanjit192@gmail.com"><Mail size={17} /> rnmanjit192@gmail.com <ArrowUpRight size={16} /></a><div className="socialLinks" aria-label="Social profiles"><a href="https://github.com/manjitkalpana" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={19} /></a><a href="https://www.linkedin.com/in/kmcmanjeet12/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={19} /></a><a href="https://www.facebook.com/kmcmanjeet12" target="_blank" rel="noreferrer" aria-label="Facebook"><Facebook size={19} /></a><a href="https://www.tiktok.com/@kanxa_babu9" target="_blank" rel="noreferrer" aria-label="TikTok"><FaTiktok size={18} /></a><a href="https://www.freelancer.si/u/rnmanjit2844" target="_blank" rel="noreferrer" aria-label="Freelancer"><BriefcaseBusiness size={18} /></a></div></div><div className="contactFormWrap"><div className="formHeading"><span>YOUR NEXT IDEA</span><span>LET&apos;S TALK ↘</span></div><ContactForm /></div></div></section>
+    <footer className="shell"><a className="footerBrand" href="#top">manjit<span>.</span></a><p>Designed with intention. Built in Nepal.</p><div className="footerRight"><span>© 2026 MANJIT RANA</span><a href="#top">BACK TO TOP ↑</a></div></footer>
   </main>;
 }
