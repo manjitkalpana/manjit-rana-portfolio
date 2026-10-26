@@ -59,7 +59,38 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [terminalInput, setTerminalInput] = useState("");
   const [terminalOutput, setTerminalOutput] = useState<string[]>(["Welcome to manjit.dev", "Type help to explore this portfolio."]);
-  const runTerminal = () => { const command = terminalInput.trim().toLowerCase(); if (!command) return; const responses: Record<string, string> = { help: "Commands: about, projects, skills, contact, github, clear", about: "Manjit Rana — IT student and web developer based in Nepal.", projects: "Current projects: KothaKhoj Nepal and Nepal Job Finder.", skills: "Stack: Next.js, React, TypeScript, Tailwind CSS, Supabase, Vercel, Git.", contact: "Email: rnmanjit192@gmail.com", github: "GitHub: github.com/manjitkalpana" }; setTerminalOutput(command === "clear" ? [] : [...terminalOutput, `guest@manjit.dev:~$ ${terminalInput}`, responses[command] || "Command not found. Type help to see available commands."]); setTerminalInput(""); };
+  const runTerminal = () => {
+    const command = terminalInput.trim().toLowerCase().replace(/^\\s+|\\s+$/g, "");
+    if (!command) return;
+    const responses: Record<string, string> = {
+      help: "PROFILE COMMANDS\\n  whoami       — short introduction\\n  profile      — professional profile\\n  about        — background and interests\\n  education    — education details\\n  experience   — work experience\\n  location     — general location\\n  languages    — spoken languages\\n  interests    — interests and focus\\n  goals        — career goals\\n\\nPORTFOLIO COMMANDS\\n  projects     — current projects\\n  kothakhoj    — KothaKhoj Nepal details\\n  jobfinder    — Nepal Job Finder details\\n  skills       — technical skills\\n  stack        — technologies I use\\n  github       — GitHub profile\\n  repositories — GitHub repositories\\n  portfolio    — website address\\n  social       — social profile links\\n  contact      — contact email\\n  availability — freelance availability\\n  clear        — clear terminal output",
+      whoami: "Manjit Rana — IT student, web developer, and digital creator based in Nepal.",
+      profile: "NAME: Manjit Rana\\nROLE: IT Student · Web Developer · Digital Creator\\nSTATUS: Building independent web projects and open to suitable freelance opportunities.\\nWORK STYLE: Curious, practical, honest, and iterative.",
+      about: "I enjoy building useful digital experiences, learning by making real projects, and improving design, usability, and functionality. I am especially interested in education tools, local discovery, jobs, and accessible web apps.",
+      education: "FIELD: Information Technology\\nINSTITUTION: Kailali Multiple Campus, Far Western University (as listed in this portfolio).\\nFOCUS: Web development, software projects, and practical IT skills.",
+      experience: "CURRENT WORK: IT Assistant at Beldandi Institute of Technology (as listed in this portfolio).\\nEXPERIENCE STYLE: Practical IT support and learning through independent digital projects.",
+      location: "BASED IN: Sudurpashchim Province, Nepal.\\nTIME ZONE: Nepal Time (UTC+5:45).",
+      languages: "Nepali · English · Hindi",
+      interests: "Web development, useful digital products, education technology, local discovery, job platforms, user-friendly design, and learning new tools.",
+      goals: "Build reliable, accessible web apps; grow as a developer; collaborate on meaningful projects; and help people discover useful digital services.",
+      projects: "01 — KothaKhoj Nepal: room, rental, and stay discovery platform (in development).\\n02 — Nepal Job Finder: job discovery concept for Nepal (in development).",
+      kothakhoj: "KOTHAKHOJ NEPAL\\nPurpose: Help people discover rooms, rentals, and stays across Nepal.\\nStack: Next.js · Supabase · Search.\\nStatus: In development.\\nURL: https://kothakhoj.manjitrana.com.np",
+      jobfinder: "NEPAL JOB FINDER\\nPurpose: Make job opportunities easier to discover and understand across Nepal.\\nStatus: In development.\\nContact to discuss: rnmanjit192@gmail.com",
+      skills: "Next.js · React · TypeScript · Tailwind CSS · Supabase · Vercel · Git/GitHub · SEO · UI/UX.",
+      stack: "FRAMEWORK: Next.js\\nFRONTEND: React\\nLANGUAGE: TypeScript\\nSTYLING: Tailwind CSS\\nBACKEND: Supabase\\nDEPLOYMENT: Vercel\\nWORKFLOW: Git & GitHub\\nFOCUS: SEO, responsive UI/UX",
+      github: "GitHub: https://github.com/manjitkalpana",
+      repositories: "Browse public repositories: https://github.com/manjitkalpana?tab=repositories",
+      portfolio: "Website: https://manjitrana.com.np",
+      social: "GitHub: github.com/manjitkalpana\\nLinkedIn: linkedin.com/in/kmcmanjeet12/\\nFacebook: facebook.com/kmcmanjeet12\\nFreelancer: freelancer.si/u/rnmanjit2844",
+      contact: "Email: rnmanjit192@gmail.com\\nPortfolio: https://manjitrana.com.np",
+      availability: "OPEN TO: Suitable freelance projects and collaborations.\\nBest first step: email rnmanjit192@gmail.com with project details.",
+      clear: ""
+    };
+    if (command === "clear") { setTerminalOutput([]); setTerminalInput(""); return; }
+    const output = responses[command] || "Command not found. Type help to see all available commands.";
+    setTerminalOutput([...terminalOutput, `guest@manjit.dev:~$ ${command}`, ...output.split("\\n")]);
+    setTerminalInput("");
+  };
   const t = copy[lang];
 
   return <main className={`creativePortfolio ${dark ? "creativeDark" : "creativeLight"}`} lang={lang === "ne" ? "ne" : "en"}>
