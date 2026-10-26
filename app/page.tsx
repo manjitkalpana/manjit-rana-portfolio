@@ -99,7 +99,22 @@ export default function Home() {
       clear: ""
     };
     if (command === "clear") { setTerminalOutput([]); setTerminalInput(""); return; }
-    const output = responses[command] || "Command not found. Type help to see all available commands.";
+    const chatReply = () => {
+      const message = command;
+      if (/^(hi|hello|hey|good morning|good afternoon|good evening)\\b/.test(message)) return "Hey! Welcome to Manjit's portfolio. Ask me about his skills, projects, experience, or how to contact him.";
+      if (/\\b(who are you|what are you|assistant|help me)\\b/.test(message)) return "I'm the portfolio terminal assistant. I can answer basic questions about Manjit's work, skills, projects, and contact details. Type help to see terminal commands.";
+      if (/\\b(project|kothakhoj|job finder|jobfinder|portfolio work)\\b/.test(message)) return responses.projects;
+      if (/\\b(skill|technology|tech stack|framework|coding)\\b/.test(message)) return responses.stack;
+      if (/\\b(contact|email|hire|freelance|work with|reach)\\b/.test(message)) return responses.contact + "\\n" + responses.availability;
+      if (/\\b(education|study|college|university)\\b/.test(message)) return responses.education;
+      if (/\\b(experience|job|work history)\\b/.test(message)) return responses.experience;
+      if (/\\b(location|where|nepal)\\b/.test(message)) return responses.location;
+      if (/\\b(language|speak)\\b/.test(message)) return responses.languages;
+      if (/\\b(about|manjit|profile|who is)\\b/.test(message)) return responses.profile;
+      if (/\\b(github|repository|repositories|source code)\\b/.test(message)) return responses.repositories;
+      return "I can chat about Manjit's portfolio, projects, skills, education, experience, and contact details. Try asking: 'What projects has he built?' or 'How can I contact him?' Type help to see commands.\\n\\nNote: I'm a built-in portfolio assistant, not a live AI chatbot.";
+    };
+    const output = responses[command] || chatReply();
     setTerminalOutput([...terminalOutput, `${visitorName}@manjit.dev:~$ ${command}`, ...output.split("\\n")]);
     setTerminalInput("");
   };
