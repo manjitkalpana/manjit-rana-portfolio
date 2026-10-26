@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ContactForm from "./ContactForm";
+import PortfolioTools from "./PortfolioTools";
 import { ArrowDownRight, ArrowUpRight, BriefcaseBusiness, Code2, Database, Facebook, Github, Layers3, Linkedin, Mail, MapPin, Moon, Palette, SearchCheck, Server, Sun, Terminal, Workflow, Zap, Globe2, Sparkles, Menu } from "lucide-react";
 
 const skills = [
@@ -163,6 +164,8 @@ export default function Home() {
     </section>
 
     <section className="creativeTerminal creativeShell" id="terminal"><div className="creativeTerminalIntro"><p className="creativeEyebrow"><Terminal size={14} /> INTERACTIVE TERMINAL</p><h2>A little <em>under the hood.</em></h2><p>Explore the portfolio using a few simple commands.</p></div><div className="creativeTerminalWindow"><div className="creativeTerminalBar"><span><i/><i/><i/></span><strong>manjit.dev — zsh</strong><a href="https://github.com/manjitkalpana" target="_blank" rel="noreferrer"><Github size={14}/> source</a></div><div className="creativeTerminalBody" aria-live="polite">{terminalOutput.map((line, i) => <p key={i} className={line.includes("@manjit.dev:~$") ? "terminalCommand" : "terminalResponse"}>{line}</p>)}<form className="creativeTerminalPrompt" onSubmit={(event) => { event.preventDefault(); runTerminal(); }}><label htmlFor="terminal-command">{visitorName}@manjit.dev:~$</label><input id="terminal-command" value={terminalInput} onChange={(event) => setTerminalInput(event.target.value)} placeholder="type help..." autoComplete="off" /><button type="submit" aria-label="Run terminal command"><ArrowUpRight size={16}/></button></form><form className="creativeVisitorNameForm" onSubmit={(event) => { event.preventDefault(); const name = visitorNameInput.trim().replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 20); if (name) { setVisitorName(name); setNameSaved(true); try { window.localStorage.setItem("manjit-terminal-visitor-name", name); } catch { /* Storage may be unavailable in private or restricted browsing. */ } setVisitorNameInput(""); setTerminalOutput([...terminalOutput, `Welcome, ${name}! Your name is saved in this browser for future visits.`]); } }}><label htmlFor="visitor-name">{nameSaved ? `Saved name: ${visitorName}` : "Set your terminal name"}</label><input id="visitor-name" value={visitorNameInput} onChange={(event) => setVisitorNameInput(event.target.value)} placeholder="Enter your name" maxLength={20} autoComplete="nickname" /><button type="submit">Save name</button></form></div></div><a className="creativeGithubLink" href="https://github.com/manjitkalpana?tab=repositories" target="_blank" rel="noreferrer"><Github size={16}/> Browse GitHub repositories <ArrowUpRight size={15}/></a></section>
+
+    <PortfolioTools />
 
     <section className="creativeAbout" id="about"><div className="creativeShell creativeAboutGrid">
       <div className="creativeAboutVisual"><p className="creativeEyebrow">{t.aboutEyebrow}</p><div className="creativeMonogram"><span>M</span><span>R</span><i>✳</i></div><div className="creativeAboutCaption"><MapPin size={14} /> SUDURPASCHIM, NEPAL <span>·</span> BUILDING EVERY DAY</div></div>
