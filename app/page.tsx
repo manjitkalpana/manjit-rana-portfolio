@@ -58,8 +58,17 @@ export default function Home() {
   const [lang, setLang] = useState<"en" | "ne">("en");
   const [dark, setDark] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
   const [visitorName, setVisitorName] = useState("guest");
   const [nameSaved, setNameSaved] = useState(false);
+  useEffect(() => {
+    const handleShortcut = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") { event.preventDefault(); setCommandOpen(open => !open); }
+      if (event.key === "Escape") setCommandOpen(false);
+    };
+    window.addEventListener("keydown", handleShortcut);
+    return () => window.removeEventListener("keydown", handleShortcut);
+  }, []);
   useEffect(() => {
     try {
       const savedName = window.localStorage.getItem("manjit-terminal-visitor-name");
@@ -175,6 +184,8 @@ export default function Home() {
     <section className="creativeSkills creativeShell" id="skills"><div className="creativeSectionHead"><div><p className="creativeEyebrow">{t.skillsEyebrow}</p><h2>{t.skillsTitle}<em>.</em></h2></div><p>{t.skillsNote}</p></div><div className="creativeSkillList">{skills.map((skill, index) => { const Icon = skill.icon; return <div className="creativeSkill" key={skill.name}><span className="creativeSkillNumber">0{index + 1}</span><Icon size={21} strokeWidth={1.7} /><strong>{skill.name}</strong><span className="creativeSkillGroup">{skill.group}</span><ArrowUpRight className="creativeSkillArrow" size={17} /></div>; })}</div><div className="creativeSkillFooter"><span><Zap size={15} />{t.learning}</span><span><Workflow size={15} />{t.process}</span></div></section>
 
     <section className="creativeContact" id="contact"><div className="creativeShell creativeContactGrid"><div className="creativeContactIntro"><p className="creativeEyebrow">{t.contactEyebrow}</p><h2>{t.contactTitleA}<br /><em>{t.contactTitleB}</em></h2><p>{t.contactText}</p><a className="creativeEmail" href="mailto:rnmanjit192@gmail.com"><Mail size={17} />rnmanjit192@gmail.com<ArrowUpRight size={16} /></a><div className="creativeSocials" aria-label="Social profiles"><a href="https://github.com/manjitkalpana" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={18} /></a><a href="https://www.linkedin.com/in/kmcmanjeet12/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={18} /></a><a href="https://www.facebook.com/kmcmanjeet12" target="_blank" rel="noreferrer" aria-label="Facebook"><Facebook size={18} /></a><a href="https://www.freelancer.si/u/rnmanjit2844" target="_blank" rel="noreferrer" aria-label="Freelancer"><BriefcaseBusiness size={18} /></a></div></div><div className="creativeContactForm"><div className="creativeFormHeader"><span>NEW PROJECT / COLLABORATION</span><span>CONTACT.init() ↘</span></div><ContactForm /></div></div></section>
+
+    {commandOpen && <div className="futureCommandOverlay" role="dialog" aria-modal="true" aria-label="Quick navigation" onMouseDown={(event) => { if (event.target === event.currentTarget) setCommandOpen(false); }}><div className="futureCommandPanel"><div className="futureCommandHeader"><span><Sparkles size={16}/> QUICK NAVIGATION</span><button onClick={() => setCommandOpen(false)} aria-label="Close command palette">ESC ✕</button></div><p>Choose a destination or launch a portfolio tool.</p><div className="futureCommandList">{[{label:"Home / Overview",detail:"Return to the hero section",href:"#top"},{label:"Projects",detail:"Explore current builds",href:"#work"},{label:"Interactive Terminal",detail:"Try portfolio commands",href:"#terminal"},{label:"About Manjit",detail:"Profile and background",href:"#about"},{label:"Tech Stack",detail:"Skills and technologies",href:"#skills"},{label:"Contact",detail:"Start a project conversation",href:"#contact"}].map((item) => <a key={item.href} href={item.href} onClick={() => setCommandOpen(false)}><span><strong>{item.label}</strong><small>{item.detail}</small></span><ArrowUpRight size={17}/></a>)}</div><div className="futureCommandFooter"><span><kbd>CTRL</kbd> + <kbd>K</kbd> to toggle</span><span>MANJIT.DEV / NAV</span></div></div></div>}
 
     <footer className="creativeFooter creativeShell"><a className="creativeFooterBrand" href="#top">manjit<span>✳</span></a><p>{t.footer}</p><div><span>© 2026 MANJIT RANA</span><a href="#top">{t.backTop} ↑</a></div></footer>
   </main>;
