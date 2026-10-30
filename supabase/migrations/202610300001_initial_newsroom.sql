@@ -86,3 +86,17 @@ alter table public.categories enable row level security;
 alter table public.countries enable row level security;
 -- Public reads are served through server routes using a server-only service role key.
 -- No anonymous write policies are created.
+
+insert into public.categories(name,slug) values
+('World News','world'),('Nepal News','nepal'),('Politics','politics'),('International Relations','international-relations'),
+('Business','business'),('Economy','economy'),('Technology','technology'),('Artificial Intelligence','artificial-intelligence'),
+('Science','science'),('Education','education'),('Health','health'),('Sports','sports'),('Entertainment','entertainment'),
+('Crime','crime'),('War and Conflicts','war-and-conflicts'),('Environment','environment'),('Climate','climate'),
+('Culture','culture'),('Society','society'),('Events','events'),('Breaking News','breaking'),('Trending News','trending')
+on conflict(slug) do nothing;
+
+insert into public.countries(name,slug,iso2) values
+('Nepal','nepal','NP'),('India','india','IN'),('China','china','CN'),('United States','united-states','US'),
+('United Kingdom','united-kingdom','GB'),('Russia','russia','RU'),('Japan','japan','JP'),('South Korea','south-korea','KR'),
+('Pakistan','pakistan','PK'),('Bangladesh','bangladesh','BD'),('Australia','australia','AU'),('Canada','canada','CA')
+on conflict(slug) do nothing;
