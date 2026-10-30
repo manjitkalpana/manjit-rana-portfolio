@@ -20,7 +20,7 @@ export function isAdminRequest(request: NextRequest) {
     const token = request.cookies.get(COOKIE)?.value;
     if (!token) return false;
     const [issued, supplied] = token.split(".");
-    if (!issued || !supplied || !/^\\d+$/.test(issued)) return false;
+    if (!issued || !supplied || !/^\d+$/.test(issued)) return false;
     const age = Math.floor(Date.now() / 1000) - Number(issued);
     if (age < 0 || age > MAX_AGE) return false;
     const expected = signature(issued);
