@@ -64,12 +64,22 @@ export async function POST(request: NextRequest) {
     if (!item) return NextResponse.json({ error: "Story not found." }, { status: 404 });
 
     if (action === "verify") {
-      const update = await db(`discovered_news?id=eq.${id}`, {
+      const groupFilter = item.duplicate_group
+        ? `duplicate_group=eq.${encodeURIComponent(item.duplicate_group)}`
+        : `id=eq.${id}`;
+      const groupResponse = await db(`discovered_news?select=id,source_id&${groupFilter}&limit=50`);
+      if (!groupResponse.ok) return NextResponse.json({ error: "Could not check supporting sources." }, { status: 502 });
+      const groupRows = await groupResponse.json();
+      const distinctSources = [...new Set(groupRows.map((x: {source_id:string|null}) => x.source_id).filter(Boolean))];
+      if (distinctSources.length < 2) {
+        return NextResponse.json({ error: "At least two independent publisher records are needed in this duplicate group before it can be marked corroborated. Check for another report from a different source first." }, { status: 409 });
+      }
+      const update = await db(`discovered_news?${groupFilter}`, {
         method: "PATCH", headers: { Prefer: "return=minimal" },
-        body: JSON.stringify({ verification_status: "corroborated", editorial_notes: "Manually marked as corroborated by an editor. Retain and review original source links before publication." })
+        body: JSON.stringify({ verification_status: "corroborated", editorial_notes: "Editor reviewed this duplicate group and marked it corroborated. Recheck each original report before publication." })
       });
       if (!update.ok) return NextResponse.json({ error: await update.text() }, { status: 502 });
-      return NextResponse.json({ ok: true, message: "Marked as editor-verified. Confirm supporting sources before publishing." });
+      return NextResponse.json({ ok: true, message: `Marked as corroborated using ${distinctSources.length} distinct publisher records in this group.` });
     }
 
     if (action === "reject") {
