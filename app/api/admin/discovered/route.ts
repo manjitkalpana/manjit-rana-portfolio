@@ -100,9 +100,9 @@ export async function POST(request: NextRequest) {
         : `id=eq.${id}`;
       const groupResponse = await db(`discovered_news?select=id,source_id,url,title&${groupFilter}&verification_status=eq.corroborated&limit=30`);
       if (!groupResponse.ok) return NextResponse.json({ error: "Could not load supporting source records." }, { status: 502 });
-      const supporting = await groupResponse.json();
+      const supporting = await groupResponse.json() as Array<{ id: string; source_id: string | null; url: string; title: string }>;
       const sourceIds = [...new Set(supporting.map((x: {source_id:string|null}) => x.source_id).filter(Boolean))];
-      const uniqueUrls = [...new Map(supporting.map((x: {url:string}) => [x.url, x])).values()];
+      const uniqueUrls = [...new Map<string, { id: string; source_id: string | null; url: string; title: string }>(supporting.map((x) => [x.url, x])).values()];
       if (uniqueUrls.length === 0) return NextResponse.json({ error: "No original source links are available." }, { status: 409 });
 
       let slug = slugify(item.draft_headline || item.title);
@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
         ? await db(`sources?select=id,name& id=in.(${sourceIds.join(",")})`.replace("& id", "&id"))
         : null;
       const sourceNames = new Map<string,string>();
-      if (sourceLookup?.ok) for (const source of await sourceLookup.json()) sourceNames.set(source.id, source.name);
+      if (sourceLookup?.ok) for (const source of await sourceLookup.json() as Array<{id:string;name:string}>) sourceNames.set(source.id, source.name);
       const links = uniqueUrls.map((entry: {url:string;title:string;source_id:string|null}) => ({
         article_id: created.id, source_id: entry.source_id, discovered_id: id,
         publisher_name: entry.source_id ? (sourceNames.get(entry.source_id) || "Original publisher") : "Original publisher",
