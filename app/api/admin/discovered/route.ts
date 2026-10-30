@@ -92,6 +92,14 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === "publish") {
+      const imageUrl = typeof body.imageUrl === "string" ? body.imageUrl.trim() : "";
+      const imageCredit = typeof body.imageCredit === "string" ? body.imageCredit.trim() : "";
+      if (imageUrl) {
+        let parsedImageUrl;
+        try { parsedImageUrl = new URL(imageUrl); } catch { return NextResponse.json({ error: "Enter a valid image URL." }, { status: 400 }); }
+        if (!["http:", "https:"].includes(parsedImageUrl.protocol)) return NextResponse.json({ error: "Image URL must use HTTPS or HTTP." }, { status: 400 });
+        if (!imageCredit) return NextResponse.json({ error: "Add the photographer, publisher, licence, or AI-image credit before publishing." }, { status: 400 });
+      }
       if (item.verification_status !== "corroborated") {
         return NextResponse.json({ error: "Mark the story as editor-verified before publishing." }, { status: 409 });
       }
@@ -116,7 +124,8 @@ export async function POST(request: NextRequest) {
         category_name: item.suggested_category || "World News",
         country_name: item.country_code || null,
         status: "published", published_at: new Date().toISOString(),
-        source_count: uniqueUrls.length, seo_title: item.draft_headline || item.title
+        source_count: uniqueUrls.length, seo_title: item.draft_headline || item.title,
+        image_url: imageUrl || null, image_credit: imageCredit || null
       };
       const createResponse = await db("articles", {
         method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(article)
