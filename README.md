@@ -1,62 +1,35 @@
-# Manjit Rana — Developer Portfolio
+# ManjitRana Global News
 
-A responsive personal portfolio for **Manjit Rana**, a BIT student and web developer from Nepal. It presents selected projects, skills, social profiles, and a contact form in a modern digital interface.
+An independent, international news publishing platform built with Next.js and Supabase PostgreSQL.
 
-## Live website
+## Current implementation
+- Editorial-style responsive homepage with no fabricated/sample stories.
+- Server-side article reads from Supabase.
+- Initial PostgreSQL schema for articles, sources, countries, categories, events, revisions, media, jobs, logs and settings.
+- Authenticated RSS/Atom discovery endpoint. Collected items remain unpublished until verification and editorial processing.
+- Vercel Cron configuration for periodic feed discovery.
 
-- Portfolio: [manjitrana.com.np](https://manjitrana.com.np)
-- KothaKhoj Nepal: [kothakhoj.manjitrana.com.np](https://kothakhoj.manjitrana.com.np)
+## Required environment variables
+Set these in Vercel Project Settings → Environment Variables (never commit values):
+- `NEXT_PUBLIC_SUPABASE_URL`: Supabase project URL.
+- `SUPABASE_SERVICE_ROLE_KEY`: Supabase service-role key; server-only, never prefix with NEXT_PUBLIC.
+- `CRON_SECRET`: long random secret used to authorize scheduled discovery.
 
-## Featured projects
+## Database setup
+1. Create a Supabase project using PostgreSQL.
+2. Open SQL Editor and run `supabase/migrations/202610300001_initial_newsroom.sql`.
+3. Add licensed RSS/Atom sources to `public.sources`. Record publisher terms and image permissions in `license_notes`.
+4. Configure the environment variables above in Vercel.
 
-- **KothaKhoj Nepal** — a room and rental discovery platform for Nepal.
-- **Nepal Job Finder** — a Nepal-focused job discovery platform currently under development.
+## Discovery
+Vercel Cron calls `/api/cron/discover` every 15 minutes and sends the configured `CRON_SECRET` as a bearer token. The endpoint only collects feed metadata and links; it does not copy publisher articles or auto-publish unverified items.
 
-## Features
+## Not yet production-enabled
+Admin authentication and role management, article editing UI, AI processing/provider integration, cross-source corroboration, licensed media ingestion, durable queue workers, analytics, alerts, backups and end-to-end tests still need implementation and configuration. Automatic publication is intentionally disabled until these safeguards exist.
 
-- Responsive desktop and mobile design
-- Animated digital interface
-- Personal and project imagery
-- LinkedIn, Facebook, TikTok, GitHub, and email links
-- Contact form that opens the visitor's email application
-- Open Graph image and custom favicon
-- Accessible icons and reduced-motion support
-
-## Technology
-
-- Next.js 16
-- React 19
-- TypeScript
-- Tailwind CSS
-- Lucide React and React Icons
-- Vinext, Vite, and Cloudflare Workers
-
-## Run locally
-
-Node.js 22.13 or newer is recommended.
-
+## Local development
+Node.js 22.13+:
 ```bash
 npm install
 npm run dev
 ```
-
-Then open the local address displayed in the terminal.
-
-## Production build
-
-```bash
-npm run build
-npm run start
-```
-
-## Contact
-
-- Email: [rnmanjit192@gmail.com](mailto:rnmanjit192@gmail.com)
-- LinkedIn: [linkedin.com/in/kmcmanjeet12](https://www.linkedin.com/in/kmcmanjeet12/)
-- Facebook: [facebook.com/kmcmanjeet12](https://www.facebook.com/kmcmanjeet12)
-- TikTok: [@kanxa_babu9](https://www.tiktok.com/@kanxa_babu9)
-- GitHub: [github.com/manjitkalpana](https://github.com/manjitkalpana)
-
-## License
-
-This portfolio and its personal assets belong to Manjit Rana. Please ask for permission before reusing the photographs or branding.
