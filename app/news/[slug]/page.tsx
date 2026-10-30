@@ -1,0 +1,13 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getArticle } from "@/lib/news";
+
+export const revalidate = 300;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params; const article = await getArticle(slug);
+  return article ? { title: article.headline, description: article.summary, openGraph: { title: article.headline, description: article.summary, images: article.image_url ? [article.image_url] : [] } } : {};
+}
+export default async function NewsArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params; const article = await getArticle(slug); if (!article) notFound();
+  return <main className="wrap articlePage"><a className="backLink" href="/">← Back to front page</a><div className="storyMeta"><span>{article.category_name ?? "News"}</span><span>{article.country_name ?? "International"}</span><span>{new Date(article.published_at).toLocaleString()}</span></div><h1>{article.headline}</h1><p className="standfirst">{article.summary}</p>{article.image_url && <figure className="articleHero"><img src={article.image_url} alt="" />{article.image_credit && <figcaption>{article.image_credit}</figcaption>}</figure>}<div className="articleBody">{(article.body_md ?? "").split(/\n\s*\n/).filter(Boolean).map((p,i)=><p key={i}>{p.replace(/^#+\s*/,"")}</p>)}</div><p className="articleDisclosure">This report is based on source material recorded by the newsroom. See source attribution and editorial notes before publication.</p></main>;
+}
