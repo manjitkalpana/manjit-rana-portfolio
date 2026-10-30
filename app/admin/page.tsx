@@ -33,6 +33,7 @@ export default function AdminPage() {
   const [busy, setBusy] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [coverImages, setCoverImages] = useState<Record<string, { url: string; credit: string }>>({});
 
   const load = useCallback(async () => {
     setError("");
@@ -64,7 +65,11 @@ export default function AdminPage() {
     const key = item.id + action; setBusy(key); setError(""); setMessage("");
     const response = await fetch("/api/admin/discovered", {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: item.id, action })
+      body: JSON.stringify({
+        id: item.id, action,
+        imageUrl: action === "publish" ? (coverImages[item.id]?.url || "") : "",
+        imageCredit: action === "publish" ? (coverImages[item.id]?.credit || "") : ""
+      })
     });
     const data = await response.json();
     setBusy("");
@@ -135,6 +140,24 @@ export default function AdminPage() {
             <a href={item.url} target="_blank" rel="noreferrer" style={{ color: "#1d4ed8", fontWeight: 700 }}>Open original report ↗</a>
           </div>
           {item.editorial_notes && <p style={{ background: "#fff8e6", color: "#7a4b00", padding: 10, borderRadius: 7, fontSize: 12, lineHeight: 1.5 }}>{item.editorial_notes}</p>}
+          {item.status !== "published" && item.status !== "rejected" && <div style={{ background: "#f7f9fc", border: "1px solid #e2e6ec", borderRadius: 9, padding: 12, margin: "12px 0" }}>
+            <strong style={{ fontSize: 13 }}>Article cover image (optional)</strong>
+            <p style={{ ...styles.muted, margin: "5px 0 8px" }}>Use an image URL you have permission to publish. Credit the photographer and publisher for news photos. Clearly label AI-generated illustrations.</p>
+            <label style={{ display: "block", fontSize: 12, fontWeight: 700 }}>Image URL</label>
+            <input aria-label="Cover image URL" type="url" placeholder="https://…"
+              value={coverImages[item.id]?.url || ""}
+              onChange={(e) => setCoverImages((prev) => ({ ...prev, [item.id]: { url: e.target.value, credit: prev[item.id]?.credit || "" } }))}
+              style={{ ...styles.input, margin: "6px 0 10px" }} />
+            <label style={{ display: "block", fontSize: 12, fontWeight: 700 }}>Image credit / label</label>
+            <input aria-label="Cover image credit" type="text" placeholder="Photo: Publisher / Photographer — or AI-generated illustration"
+              value={coverImages[item.id]?.credit || ""}
+              onChange={(e) => setCoverImages((prev) => ({ ...prev, [item.id]: { url: prev[item.id]?.url || "", credit: e.target.value } }))}
+              style={{ ...styles.input, margin: "6px 0 0" }} />
+            {coverImages[item.id]?.url && <div style={{ marginTop: 10 }}>
+              <img src={coverImages[item.id].url} alt="Selected article cover preview" style={{ width: "100%", maxHeight: 220, objectFit: "cover", borderRadius: 7 }} />
+              <div style={styles.muted}>{coverImages[item.id].credit || "Credit required before publishing"}</div>
+            </div>}
+          </div>}
           <details style={{ margin: "12px 0" }}><summary style={{ cursor: "pointer", fontWeight: 700, fontSize: 13 }}>Preview generated draft</summary><pre style={{ whiteSpace: "pre-wrap", font: "13px/1.6 Arial", background: "#f7f8fa", padding: 12, borderRadius: 8 }}>{item.draft_body_md || "No draft body available."}</pre></details>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {item.status !== "rejected" && item.status !== "published" && item.verification_status !== "corroborated" && <button disabled={!!busy} onClick={() => void act(item,"verify")} style={{ ...styles.button, background: "#eff6ff", borderColor: "#bfdbfe" }}>{busy === item.id+"verify" ? "Saving…" : "I checked sources — mark verified"}</button>}
