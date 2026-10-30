@@ -3,5 +3,5 @@
   "framework": "nextjs",
   "installCommand": "npm install",
   "buildCommand": "npx next build",
-  "crons": [{ "path": "/api/cron/discover", "schedule": "*/15 * * * *" }]
+  "crons": [{ "path": "/api/cron/discover", "schedule": "0 0 * * *" }]
 }
