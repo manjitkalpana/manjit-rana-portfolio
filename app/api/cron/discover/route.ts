@@ -36,10 +36,23 @@ export async function GET(request: NextRequest) {
       const xml = await response.text();
       for (const item of entries(xml).slice(0, 20)) {
         const fingerprint = createHash("sha256").update(item.url).digest("hex");
-        const result = await fetch(`${base}/rest/v1/discovered_news?on_conflict=fingerprint`, { method: "POST", headers: { ...headers, Prefer: "resolution=ignore-duplicates,return=minimal" }, body: JSON.stringify({ source_id: feed.id, title: item.title, url: item.url, summary: item.summary, published_at: item.published_at, fingerprint, country_code: feed.country_code, suggested_category: feed.category, status: "collected" }) });
+        const normalizedTitle = item.title.toLowerCase().normalize("NFKD").replace(/[^\\p{L}\\p{N}]+/gu, " ").trim().replace(/\\s+/g, " ");
+        const duplicateGroup = createHash("sha256").update(normalizedTitle).digest("hex");
+        const safeSummary = item.summary || "The original publisher has not supplied a summary. Read the linked report for details.";
+        const draftBody = [
+          "## What we know",
+          safeSummary,
+          "",
+          "## Source",
+          `This item was first identified by ${feed.name}. The original report is linked below.`,
+          "",
+          "## Verification status",
+          "Single-source report. This is an automatically prepared discovery note, not independently verified reporting. Confirm key facts with independent sources before publication."
+        ].join("\\n");
+        const result = await fetch(`${base}/rest/v1/discovered_news?on_conflict=fingerprint`, { method: "POST", headers: { ...headers, Prefer: "resolution=ignore-duplicates,return=minimal" }, body: JSON.stringify({ source_id: feed.id, title: item.title, url: item.url, summary: item.summary, published_at: item.published_at, fingerprint, country_code: feed.country_code, suggested_category: feed.category, status: "needs_review", normalized_title: normalizedTitle, duplicate_group: duplicateGroup, verification_status: "single_source", draft_headline: item.title, draft_summary: safeSummary.slice(0, 500), draft_body_md: draftBody, editorial_notes: "Auto-generated from RSS metadata only. Not AI fact-checked. Verify independently before publication." }) });
         if (result.ok) discovered++; else skipped++;
       }
     } catch { failed++; }
   }
-  return NextResponse.json({ ok: true, feeds_checked: feeds.length, discovered, skipped, failed, note: "Collected items are not published. Editorial verification and AI processing are separate required stages." });
+  return NextResponse.json({ ok: true, feeds_checked: feeds.length, discovered, skipped, failed, note: "Free rule-based discovery drafts created for review. No automatic publication; single-source items remain unverified." });
 }
