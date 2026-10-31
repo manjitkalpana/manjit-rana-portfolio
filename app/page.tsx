@@ -51,6 +51,18 @@ export default async function Home() {
       </section>
       <section className="newsletter"><div><span className="eyebrow">THE WORLD, IN CONTEXT</span><h2>Stay informed.<br/>Stay curious.</h2></div><p>Explore independent coverage across countries, politics, business, technology, science and culture. We publish only when our sourcing and editorial checks support the story.</p></section>
     </div>
-    <footer><div className="wrap footerInner"><Link className="brand footerBrand" href="/">MANJIT<span>RANA</span><small>GLOBAL NEWS</small></Link><div><Link href="/about">About</Link><Link href="/editorial-policy">Editorial policy</Link><Link href="/corrections">Corrections</Link><Link href="/contact">Contact</Link><Link href="/admin">Admin</Link></div><small>© {new Date().getFullYear()} Manjit Rana · Independent publication</small></div></footer>
+    <footer className="siteFooter">
+      <div className="wrap footerMain">
+        <div className="footerAbout">
+          <Link className="brand footerBrand" href="/">MANJIT<span>RANA</span><small>GLOBAL NEWS</small></Link>
+          <p>Independent global journalism bringing you important stories, useful context and perspectives from Nepal and around the world.</p>
+          <span className="footerMotto">WORLD NEWS. CLEAR PERSPECTIVES.</span>
+        </div>
+        <div className="footerColumn"><h3>Explore</h3><Link href="/latest">Latest news</Link><Link href="/search">Search stories</Link><Link href="/country/nepal">Nepal</Link><Link href="/events">Events</Link></div>
+        <div className="footerColumn"><h3>Sections</h3>{sections.map(([label, slug]) => <Link key={slug} href={`/category/${slug}`}>{label}</Link>)}</div>
+        <div className="footerColumn"><h3>About us</h3><Link href="/about">About the newsroom</Link><Link href="/about">Our editorial principles</Link><Link href="/about">Sourcing and corrections</Link><Link href="/admin">Newsroom admin</Link></div>
+      </div>
+      <div className="wrap footerBottom"><span>© {new Date().getFullYear()} <strong>Manjit Rana</strong>. Independent publication.</span><span>Made for curious readers · Dhangadhi, Nepal</span><Link href="/">Back to top ↑</Link></div>
+    </footer>
   </main>;
 }
