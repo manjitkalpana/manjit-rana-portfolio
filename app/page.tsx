@@ -50,6 +50,6 @@ export default async function Home() {
       </section>
       <section className="newsletter"><div><span className="eyebrow">THE WORLD, IN CONTEXT</span><h2>Stay informed.<br/>Stay curious.</h2></div><p>Explore independent coverage across countries, politics, business, technology, science and culture. We publish only when our sourcing and editorial checks support the story.</p></section>
     </div>
-    <footer><div className="wrap footerInner"><Link className="brand footerBrand" href="/">MANJIT<span>RANA</span><small>GLOBAL NEWS</small></Link><div><Link href="/about">About</Link><Link href="/editorial-policy">Editorial policy</Link><Link href="/corrections">Corrections</Link><Link href="/contact">Contact</Link><Link href="/admin">Admin</Link></div><small>© {new Date().getFullYear()} ManjitRana.com.np · Independent publication</small></div></footer>
+    <footer><div className="wrap footerInner"><Link className="brand footerBrand" href="/">MANJIT<span>RANA</span><small>GLOBAL NEWS</small></Link><div><Link href="/about">About</Link><Link href="/editorial-policy">Editorial policy</Link><Link href="/corrections">Corrections</Link><Link href="/contact">Contact</Link><Link href="/admin">Admin</Link></div><small>© {new Date().getFullYear()} Manjit Rana · Independent publication</small></div></footer>
   </main>;
 }
