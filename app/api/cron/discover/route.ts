@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
         const normalizedTitle = item.title.toLowerCase().normalize("NFKD").replace(/[^\p{L}\p{N}]+/gu, " ").trim().replace(/\s+/g, " ");
         const duplicateGroup = createHash("sha256").update(normalizedTitle).digest("hex");
         const safeSummary = item.summary || "The original publisher has not supplied a summary. Read the linked report for details.";
-        const draftBody = ["## What we know", safeSummary, "", "## Source", `This item was first identified by ${feed.name}. The original report is linked below.`, "", "## Verification status", "Single-source report. This discovery note has not been independently verified."].join("\\n");
+        const draftBody = ["## What we know", safeSummary, "", "## Source", `This item was first identified by ${feed.name}. The original report is linked below.`, "", "## Verification status", "Single-source report. This discovery note has not been independently verified."].join("\n");
         const result = await db("discovered_news?on_conflict=fingerprint", { method: "POST", headers: { Prefer: "resolution=ignore-duplicates,return=minimal" }, body: JSON.stringify({ source_id: feed.id, title: item.title, url: item.url, summary: item.summary, published_at: item.published_at, fingerprint, country_code: feed.country_code, suggested_category: feed.category, status: "needs_review", normalized_title: normalizedTitle, duplicate_group: duplicateGroup, verification_status: "single_source", draft_headline: item.title, draft_summary: safeSummary.slice(0, 500), draft_body_md: draftBody, editorial_notes: "Auto-generated from RSS metadata. Awaiting independent publisher corroboration." }) });
         if (result.ok) discovered++; else skipped++;
       }
