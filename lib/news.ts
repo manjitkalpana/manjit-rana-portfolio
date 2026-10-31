@@ -30,7 +30,7 @@ export async function getArticleSources(articleId: string): Promise<ArticleSourc
     const response = await fetch(`${base}/rest/v1/article_sources?select=publisher_name,source_url&article_id=eq.${encodeURIComponent(articleId)}&order=accessed_at.desc`, { headers: { apikey: key, Authorization: `Bearer ${key}` }, next: { revalidate: 300 } });
     if (!response.ok) return [];
     const rows = await response.json() as ArticleSource[];
-    return rows.filter((row) => /^https?:\\/\\//i.test(row.source_url));
+    return rows.filter((row) => row.source_url.startsWith("https://") || row.source_url.startsWith("http://"));
   } catch { return []; }
 }
 export async function getCategoryArticles(slug: string) {
