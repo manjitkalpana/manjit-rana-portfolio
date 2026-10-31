@@ -20,6 +20,31 @@ async function db(path: string, init?: RequestInit) {
     ...init, headers: { ...headers(key), ...(init?.headers ?? {}) }, cache: "no-store"
   });
 }
+
+const CATEGORY_RULES: Array<[string, RegExp]> = [
+  ["Politics", /\\b(election|parliament|president|prime minister|minister|government|cabinet|political|politics|coalition|opposition|party leader|lawmakers|legislature|senate|congress|diplomat|diplomacy|foreign minister|constitution|referendum)\\b/i],
+  ["Business", /\\b(business|company|companies|corporate|market|markets|stock|stocks|shares|economy|economic|inflation|trade|exports?|imports?|bank|banking|investment|investor|finance|startup|entrepreneur|profit|revenue|budget|tax|currency|rupee|dollar|ipo|merger|acquisition)\\b/i],
+  ["Technology", /\\b(technology|tech|artificial intelligence|\\bAI\\b|software|cyber|internet|digital|smartphone|mobile app|semiconductor|chipmaker|robot|robotics|spaceX|satellite|telecom|social media|data breach|hacker|cybersecurity)\\b/i],
+  ["Sports", /\\b(sport|sports|football|soccer|cricket|basketball|tennis|badminton|olympic|olympics|world cup|championship|tournament|league|fifa|icc|athlete|goal|match|coach|medal)\\b/i],
+  ["Science", /\\b(science|scientist|researchers?|study finds|research study|discovery|physics|chemistry|biology|astronomy|nasa|experiment|clinical trial|genome|vaccine research)\\b/i],
+  ["Health", /\\b(health|hospital|patient|patients|disease|outbreak|virus|infection|medical|medicine|doctor|doctors|surgery|mental health|public health|who warns|epidemic|pandemic)\\b/i],
+  ["Education", /\\b(education|school|schools|university|universities|college|students?|teacher|teachers|exam|examination|curriculum|scholarship|campus|academic|literacy)\\b/i],
+  ["Environment", /\\b(environment|climate|climate change|global warming|weather|flood|flooding|earthquake|landslide|wildfire|forest|forests|pollution|conservation|biodiversity|drought|storm|cyclone|disaster)\\b/i],
+  ["Entertainment", /\\b(entertainment|film|movie|cinema|actor|actress|celebrity|music|singer|concert|television|tv series|streaming|netflix|festival|art exhibition|box office)\\b/i],
+  ["Culture", /\\b(culture|cultural|heritage|tradition|religion|festival|literature|book|author|museum|language|archaeology|art|craft)\\b/i],
+  ["Crime", /\\b(crime|police|arrest|arrested|murder|assault|robbery|theft|fraud|court|lawsuit|prosecutor|investigation|suspect|kidnap|trafficking|corruption|convicted|sentenced)\\b/i],
+  ["Nepal", /\\b(nepal|nepali|kathmandu|pokhara|dhangadhi|kanchanpur|sudurpaschim|bagmati|koshi province|madhesh|lumbini province)\\b/i]
+];
+function classifyCategory(title: string, summary: string, feedCategory: string | null) {
+  const text = `${title} ${title} ${summary}`;
+  const scores = CATEGORY_RULES.map(([name, pattern]) => ({ name, score: (text.match(new RegExp(pattern.source, "gi")) || []).length }));
+  scores.sort((a,b) => b.score-a.score);
+  if (scores[0]?.score > 0) return scores[0].name;
+  const known = ["World","Nepal","Politics","Business","Technology","Science","Sports","Culture","Health","Education","Environment","Entertainment","Crime"];
+  const normalized = (feedCategory || "").trim().toLowerCase();
+  return known.find(name => name.toLowerCase() === normalized) || "World";
+}
+
 function slugify(value: string) {
   const slug = value.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 90);
   return slug || createHash("sha1").update(value).digest("hex").slice(0, 12);
@@ -121,7 +146,7 @@ export async function POST(request: NextRequest) {
         slug, headline: item.draft_headline || item.title,
         summary: item.draft_summary || item.summary || "Read the linked original sources for details.",
         body_md: item.draft_body_md || item.summary || "",
-        category_name: item.suggested_category || "World News",
+        category_name: classifyCategory(item.draft_headline || item.title, item.draft_summary || item.summary || "", item.suggested_category),
         country_name: item.country_code || null,
         status: "published", published_at: new Date().toISOString(),
         source_count: uniqueUrls.length, seo_title: item.draft_headline || item.title,
