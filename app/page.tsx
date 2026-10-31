@@ -30,6 +30,7 @@ export default async function Home() {
       <div className="mastheadRight"><span>WORLD NEWS. CLEAR PERSPECTIVES.</span><Link href="/search">Search <b>⌕</b></Link></div>
     </header>
     <nav className="nav"><div className="wrap navInner"><Link href="/">Home</Link>{sections.map(([label, slug]) => <Link key={slug} href={`/category/${slug}`}>{label}</Link>)}<Link href="/country/nepal">Nepal</Link><Link href="/events">Events</Link></div></nav>
+    <section className="headlineTicker" aria-label="Latest news headlines"><div className="tickerLabel"><span className="liveDot" />LATEST</div><div className="tickerViewport"><div className="tickerTrack">{(latest.slice(0, 8).length ? [...latest.slice(0, 8), ...latest.slice(0, 8)] : []).map((item, index) => <Link className="tickerHeadline" href={`/news/${item.slug}`} key={`${item.id}-${index}`}><span>{item.category_name ?? "NEWS"}</span>{item.headline}<b>◆</b></Link>)}{!latest.length && <span className="tickerEmpty">Latest verified headlines will appear here.</span>}</div></div></section>
     <div className="wrap">
       <div className="breaking"><b>NEWS DESK</b><span>Independent reporting · Verified sources · Global perspective</span><Link href="/category/breaking">Breaking news →</Link></div>
       {lead ? <section className="leadGrid">
