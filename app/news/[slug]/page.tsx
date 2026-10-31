@@ -52,7 +52,8 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
         <span>{new Date(article.published_at).toLocaleString()}</span>
       </div>
       <h1>{article.headline}</h1>
-      <p className="standfirst">{article.summary}</p>\n      <AdUnit slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_TOP ?? ""} />
+      <p className="standfirst">{article.summary}</p>
+      <AdUnit slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_TOP ?? ""} />
       {article.image_url && (
         <figure className="articleHero">
           <img src={article.image_url} alt="" />
@@ -78,7 +79,8 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
           </ul>
         </section>
       )}
-      <AdUnit slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_BOTTOM ?? ""} />\n      <p className="articleDisclosure">This report is based on source material recorded by the newsroom. See source attribution and editorial notes before publication.</p>
+      <AdUnit slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_BOTTOM ?? ""} />
+      <p className="articleDisclosure">This report is based on source material recorded by the newsroom. See source attribution and editorial notes before publication.</p>
     </main>
   );
 }
