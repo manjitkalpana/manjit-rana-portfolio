@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AdUnit from "@/components/ad-unit";
 import { getLatestArticles, getFeaturedArticles } from "@/lib/news";
 
 export const revalidate = 300;
@@ -49,7 +50,7 @@ export default async function Home() {
       <section className="latestSection"><div className="sectionTitle"><h2>Latest reporting</h2><Link href="/latest">View all news →</Link></div>
         {more.length ? <div className="latestGrid">{more.map((item) => <article className="latestCard" key={item.id}>{item.image_url ? <Link href={`/news/${item.slug}`} className="cardImage"><img src={item.image_url} alt="" /></Link> : <div className="cardPlaceholder">GLOBAL / REPORT</div>}<div className="storyMeta"><span>{item.category_name ?? "News"}</span><span>{timeAgo(item.published_at)}</span></div><h3><Link href={`/news/${item.slug}`}>{item.headline}</Link></h3><p>{item.summary}</p><small>{item.country_name ?? "International"}</small></article>)}</div> : <div className="emptyLatest"><strong>The newsroom is getting ready.</strong><p>No articles have been published yet. Stories will appear here after sourcing and editorial checks.</p></div>}
       </section>
-      <section className="newsletter"><div><span className="eyebrow">THE WORLD, IN CONTEXT</span><h2>Stay informed.<br/>Stay curious.</h2></div><p>Explore independent coverage across countries, politics, business, technology, science and culture. We publish only when our sourcing and editorial checks support the story.</p></section>
+      <AdUnit slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_FEED ?? ""} />\n      <section className="newsletter"><div><span className="eyebrow">THE WORLD, IN CONTEXT</span><h2>Stay informed.<br/>Stay curious.</h2></div><p>Explore independent coverage across countries, politics, business, technology, science and culture. We publish only when our sourcing and editorial checks support the story.</p></section>
     </div>
     <footer className="siteFooter">
       <div className="wrap footerMain">
