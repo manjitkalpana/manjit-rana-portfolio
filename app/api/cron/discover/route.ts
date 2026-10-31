@@ -21,18 +21,18 @@ function entries(xml: string) {
 }
 
 const CATEGORY_RULES: Array<[string, RegExp]> = [
-  ["Politics", /\\b(election|parliament|president|prime minister|minister|government|cabinet|political|politics|coalition|opposition|party leader|lawmakers|legislature|senate|congress|diplomat|diplomacy|foreign minister|constitution|referendum)\\b/i],
-  ["Business", /\\b(business|company|companies|corporate|market|markets|stock|stocks|shares|economy|economic|inflation|trade|exports?|imports?|bank|banking|investment|investor|finance|startup|entrepreneur|profit|revenue|budget|tax|currency|rupee|dollar|ipo|merger|acquisition)\\b/i],
-  ["Technology", /\\b(technology|tech|artificial intelligence|\\bAI\\b|software|cyber|internet|digital|smartphone|mobile app|semiconductor|chipmaker|robot|robotics|spaceX|satellite|telecom|social media|data breach|hacker|cybersecurity)\\b/i],
-  ["Sports", /\\b(sport|sports|football|soccer|cricket|basketball|tennis|badminton|olympic|olympics|world cup|championship|tournament|league|fifa|icc|athlete|goal|match|coach|medal)\\b/i],
-  ["Science", /\\b(science|scientist|researchers?|study finds|research study|discovery|physics|chemistry|biology|astronomy|nasa|experiment|clinical trial|genome|vaccine research)\\b/i],
-  ["Health", /\\b(health|hospital|patient|patients|disease|outbreak|virus|infection|medical|medicine|doctor|doctors|surgery|mental health|public health|who warns|epidemic|pandemic)\\b/i],
-  ["Education", /\\b(education|school|schools|university|universities|college|students?|teacher|teachers|exam|examination|curriculum|scholarship|campus|academic|literacy)\\b/i],
-  ["Environment", /\\b(environment|climate|climate change|global warming|weather|flood|flooding|earthquake|landslide|wildfire|forest|forests|pollution|conservation|biodiversity|drought|storm|cyclone|disaster)\\b/i],
-  ["Entertainment", /\\b(entertainment|film|movie|cinema|actor|actress|celebrity|music|singer|concert|television|tv series|streaming|netflix|festival|art exhibition|box office)\\b/i],
-  ["Culture", /\\b(culture|cultural|heritage|tradition|religion|festival|literature|book|author|museum|language|archaeology|art|craft)\\b/i],
-  ["Crime", /\\b(crime|police|arrest|arrested|murder|assault|robbery|theft|fraud|court|lawsuit|prosecutor|investigation|suspect|kidnap|trafficking|corruption|convicted|sentenced)\\b/i],
-  ["Nepal", /\\b(nepal|nepali|kathmandu|pokhara|dhangadhi|kanchanpur|sudurpaschim|bagmati|koshi province|madhesh|lumbini province)\\b/i]
+  ["Politics", /\b(election|parliament|president|prime minister|minister|government|cabinet|political|politics|coalition|opposition|party leader|lawmakers|legislature|senate|congress|diplomat|diplomacy|foreign minister|constitution|referendum)\b/i],
+  ["Business", /\b(business|company|companies|corporate|market|markets|stock|stocks|shares|economy|economic|inflation|trade|exports?|imports?|bank|banking|investment|investor|finance|startup|entrepreneur|profit|revenue|budget|tax|currency|rupee|dollar|ipo|merger|acquisition)\b/i],
+  ["Technology", /\b(technology|tech|artificial intelligence|\bAI\b|software|cyber|internet|digital|smartphone|mobile app|semiconductor|chipmaker|robot|robotics|spaceX|satellite|telecom|social media|data breach|hacker|cybersecurity)\b/i],
+  ["Sports", /\b(sport|sports|football|soccer|cricket|basketball|tennis|badminton|olympic|olympics|world cup|championship|tournament|league|fifa|icc|athlete|goal|match|coach|medal)\b/i],
+  ["Science", /\b(science|scientist|researchers?|study finds|research study|discovery|physics|chemistry|biology|astronomy|nasa|experiment|clinical trial|genome|vaccine research)\b/i],
+  ["Health", /\b(health|hospital|patient|patients|disease|outbreak|virus|infection|medical|medicine|doctor|doctors|surgery|mental health|public health|who warns|epidemic|pandemic)\b/i],
+  ["Education", /\b(education|school|schools|university|universities|college|students?|teacher|teachers|exam|examination|curriculum|scholarship|campus|academic|literacy)\b/i],
+  ["Environment", /\b(environment|climate|climate change|global warming|weather|flood|flooding|earthquake|landslide|wildfire|forest|forests|pollution|conservation|biodiversity|drought|storm|cyclone|disaster)\b/i],
+  ["Entertainment", /\b(entertainment|film|movie|cinema|actor|actress|celebrity|music|singer|concert|television|tv series|streaming|netflix|festival|art exhibition|box office)\b/i],
+  ["Culture", /\b(culture|cultural|heritage|tradition|religion|festival|literature|book|author|museum|language|archaeology|art|craft)\b/i],
+  ["Crime", /\b(crime|police|arrest|arrested|murder|assault|robbery|theft|fraud|court|lawsuit|prosecutor|investigation|suspect|kidnap|trafficking|corruption|convicted|sentenced)\b/i],
+  ["Nepal", /\b(nepal|nepali|kathmandu|pokhara|dhangadhi|kanchanpur|sudurpaschim|bagmati|koshi province|madhesh|lumbini province)\b/i]
 ];
 function classifyCategory(title: string, summary: string, feedCategory: string | null) {
   const text = `${title} ${title} ${summary}`;
