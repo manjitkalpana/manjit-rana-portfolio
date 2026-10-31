@@ -19,6 +19,31 @@ function entries(xml: string) {
     return { title, url: link, summary: description.slice(0, 1200), published_at: date && !Number.isNaN(Date.parse(date)) ? new Date(date).toISOString() : new Date().toISOString() };
   }).filter((x) => x.title && /^https?:\/\//i.test(x.url));
 }
+
+const CATEGORY_RULES: Array<[string, RegExp]> = [
+  ["Politics", /\\b(election|parliament|president|prime minister|minister|government|cabinet|political|politics|coalition|opposition|party leader|lawmakers|legislature|senate|congress|diplomat|diplomacy|foreign minister|constitution|referendum)\\b/i],
+  ["Business", /\\b(business|company|companies|corporate|market|markets|stock|stocks|shares|economy|economic|inflation|trade|exports?|imports?|bank|banking|investment|investor|finance|startup|entrepreneur|profit|revenue|budget|tax|currency|rupee|dollar|ipo|merger|acquisition)\\b/i],
+  ["Technology", /\\b(technology|tech|artificial intelligence|\\bAI\\b|software|cyber|internet|digital|smartphone|mobile app|semiconductor|chipmaker|robot|robotics|spaceX|satellite|telecom|social media|data breach|hacker|cybersecurity)\\b/i],
+  ["Sports", /\\b(sport|sports|football|soccer|cricket|basketball|tennis|badminton|olympic|olympics|world cup|championship|tournament|league|fifa|icc|athlete|goal|match|coach|medal)\\b/i],
+  ["Science", /\\b(science|scientist|researchers?|study finds|research study|discovery|physics|chemistry|biology|astronomy|nasa|experiment|clinical trial|genome|vaccine research)\\b/i],
+  ["Health", /\\b(health|hospital|patient|patients|disease|outbreak|virus|infection|medical|medicine|doctor|doctors|surgery|mental health|public health|who warns|epidemic|pandemic)\\b/i],
+  ["Education", /\\b(education|school|schools|university|universities|college|students?|teacher|teachers|exam|examination|curriculum|scholarship|campus|academic|literacy)\\b/i],
+  ["Environment", /\\b(environment|climate|climate change|global warming|weather|flood|flooding|earthquake|landslide|wildfire|forest|forests|pollution|conservation|biodiversity|drought|storm|cyclone|disaster)\\b/i],
+  ["Entertainment", /\\b(entertainment|film|movie|cinema|actor|actress|celebrity|music|singer|concert|television|tv series|streaming|netflix|festival|art exhibition|box office)\\b/i],
+  ["Culture", /\\b(culture|cultural|heritage|tradition|religion|festival|literature|book|author|museum|language|archaeology|art|craft)\\b/i],
+  ["Crime", /\\b(crime|police|arrest|arrested|murder|assault|robbery|theft|fraud|court|lawsuit|prosecutor|investigation|suspect|kidnap|trafficking|corruption|convicted|sentenced)\\b/i],
+  ["Nepal", /\\b(nepal|nepali|kathmandu|pokhara|dhangadhi|kanchanpur|sudurpaschim|bagmati|koshi province|madhesh|lumbini province)\\b/i]
+];
+function classifyCategory(title: string, summary: string, feedCategory: string | null) {
+  const text = `${title} ${title} ${summary}`;
+  const scores = CATEGORY_RULES.map(([name, pattern]) => ({ name, score: (text.match(new RegExp(pattern.source, "gi")) || []).length }));
+  scores.sort((a,b) => b.score-a.score);
+  if (scores[0]?.score > 0) return scores[0].name;
+  const known = ["World","Nepal","Politics","Business","Technology","Science","Sports","Culture","Health","Education","Environment","Entertainment","Crime"];
+  const normalized = (feedCategory || "").trim().toLowerCase();
+  return known.find(name => name.toLowerCase() === normalized) || "World";
+}
+
 function slugify(value: string) {
   return value.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 90) || createHash("sha1").update(value).digest("hex").slice(0, 12);
 }
@@ -46,7 +71,7 @@ export async function GET(request: NextRequest) {
         const duplicateGroup = createHash("sha256").update(normalizedTitle).digest("hex");
         const safeSummary = item.summary || "The original publisher has not supplied a summary. Read the linked report for details.";
         const draftBody = ["## What we know", safeSummary, "", "## Source", `This item was first identified by ${feed.name}. The original report is linked below.`, "", "## Verification status", "Single-source report. This discovery note has not been independently verified."].join("\n");
-        const result = await db("discovered_news?on_conflict=fingerprint", { method: "POST", headers: { Prefer: "resolution=ignore-duplicates,return=minimal" }, body: JSON.stringify({ source_id: feed.id, title: item.title, url: item.url, summary: item.summary, published_at: item.published_at, fingerprint, country_code: feed.country_code, suggested_category: feed.category, status: "needs_review", normalized_title: normalizedTitle, duplicate_group: duplicateGroup, verification_status: "single_source", draft_headline: item.title, draft_summary: safeSummary.slice(0, 500), draft_body_md: draftBody, editorial_notes: "Auto-generated from RSS metadata. Awaiting independent publisher corroboration." }) });
+        const result = await db("discovered_news?on_conflict=fingerprint", { method: "POST", headers: { Prefer: "resolution=ignore-duplicates,return=minimal" }, body: JSON.stringify({ source_id: feed.id, title: item.title, url: item.url, summary: item.summary, published_at: item.published_at, fingerprint, country_code: feed.country_code, suggested_category: classifyCategory(item.title, safeSummary, feed.category), status: "needs_review", normalized_title: normalizedTitle, duplicate_group: duplicateGroup, verification_status: "single_source", draft_headline: item.title, draft_summary: safeSummary.slice(0, 500), draft_body_md: draftBody, editorial_notes: "Auto-generated from RSS metadata. Awaiting independent publisher corroboration." }) });
         if (result.ok) discovered++; else skipped++;
       }
     } catch { failed++; }
@@ -81,7 +106,7 @@ export async function GET(request: NextRequest) {
       if (sourceIds.length < 2) continue;
       const summary = primary.draft_summary || primary.summary || "Multiple independent publishers have reported this story. Follow the original reports for developing details.";
       const body = [`## Latest report\n\n${summary}`, "## Independent sources\n\nThis report was matched across at least two distinct publisher domains. Details may develop; consult the original reports linked below."].join("\n\n");
-      const create = await db("articles", { method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify({ slug, headline, summary, body_md: body, category_name: primary.suggested_category || "Nepal", country_name: primary.country_code || null, status: "published", published_at: new Date().toISOString(), source_count: supporting.length, seo_title: headline }) });
+      const create = await db("articles", { method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify({ slug, headline, summary, body_md: body, category_name: classifyCategory(primary.draft_headline || primary.title, primary.draft_summary || primary.summary || "", primary.suggested_category), country_name: primary.country_code || null, status: "published", published_at: new Date().toISOString(), source_count: supporting.length, seo_title: headline }) });
       if (!create.ok) continue;
       const article = (await create.json())[0];
       const links = supporting.map((item) => ({ article_id: article.id, source_id: item.source_id, discovered_id: item.id, publisher_name: item.source_id ? (sourceNames.get(item.source_id) || "Original publisher") : "Original publisher", source_url: item.url }));
