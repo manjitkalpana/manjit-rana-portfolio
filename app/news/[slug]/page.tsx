@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getArticle } from "@/lib/news";
+import { getArticle, getArticleSources } from "@/lib/news";
 
 export const revalidate = 300;
 
@@ -40,6 +40,7 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
   const { slug } = await params;
   const article = await getArticle(slug);
   if (!article) notFound();
+  const sources = await getArticleSources(article.id);
 
   return (
     <main className="wrap articlePage">
@@ -62,6 +63,20 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
           <p key={index}>{renderLinkedText(paragraph.replace(/^#+\s*/, ""))}</p>
         ))}
       </div>
+      {sources.length > 0 && (
+        <section className="articleSources" aria-labelledby="article-sources-heading">
+          <h2 id="article-sources-heading">Original sources</h2>
+          <ul>
+            {sources.map((source, index) => (
+              <li key={`${source.source_url}-${index}`}>
+                <a href={source.source_url} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline", textUnderlineOffset: "3px", fontWeight: 600, overflowWrap: "anywhere" }}>
+                  Read original report — {source.publisher_name || "Source"} ↗
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       <p className="articleDisclosure">This report is based on source material recorded by the newsroom. See source attribution and editorial notes before publication.</p>
     </main>
   );
