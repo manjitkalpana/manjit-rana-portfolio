@@ -15,3 +15,6 @@
 /* AdSense placements stay hidden until real publisher and slot IDs are configured */
 .adPlacement{width:100%;max-width:100%;min-height:90px;margin:24px auto 30px;padding:8px 0;overflow:hidden;text-align:center}.adLabel{display:block;margin-bottom:6px;color:#999;font:9px Arial,sans-serif;letter-spacing:.13em}.adPlacement ins{margin-inline:auto;max-width:100%;overflow:hidden}
 @media(max-width:600px){.adPlacement{margin:16px auto 22px;min-height:70px}.adPlacement ins{min-height:70px!important}}
+
+.adPlacement{width:100%;max-width:100%;min-height:90px;margin:24px auto 30px;padding:8px 0;overflow:hidden;text-align:center}.adLabel{display:block;margin-bottom:6px;color:#999;font:9px Arial,sans-serif;letter-spacing:.13em}.adPlacement ins{margin-inline:auto;max-width:100%;overflow:hidden}
+@media(max-width:600px){.adPlacement{margin:16px auto 22px;min-height:70px}.adPlacement ins{min-height:70px!important}}
