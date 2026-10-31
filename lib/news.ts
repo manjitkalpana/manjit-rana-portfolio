@@ -9,13 +9,13 @@ async function queryArticles(path: string): Promise<Article[]> {
   if (!base || !key) return [];
   try {
     const response = await fetch(`${base}/rest/v1/${path}`, { headers: { apikey: key, Authorization: `Bearer ${key}` }, next: { revalidate: 300 } });
-    if (!response.ok) return [];
+    if (!response.ok) { console.error("News query failed:", response.status, await response.text()); return []; }
     return await response.json() as Article[];
-  } catch { return []; }
+  } catch (error) { console.error("News query error:", error); return []; }
 }
 export const articleSelect = "id,slug,headline,summary,body_md,image_url,image_credit,published_at,category_name,country_name,source_count";
 export async function getLatestArticles() {
-  return queryArticles(`articles?select=${articleSelect}&status=eq.published&order=published_at.desc&limit=25`);
+  return queryArticles(`articles?select=${articleSelect}&status=eq.published&order=published_at.desc&limit=500`);
 }
 export async function getFeaturedArticles() {
   return queryArticles(`articles?select=${articleSelect}&status=eq.published&is_featured=eq.true&order=published_at.desc&limit=5`);
