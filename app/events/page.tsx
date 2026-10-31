@@ -1,0 +1,4 @@
+import Link from "next/link";
+import { getLatestArticles } from "@/lib/news";
+export const revalidate = 300;
+export default async function EventsPage(){const articles=(await getLatestArticles()).filter(a=>/event|festival|conference|summit/i.test([a.category_name,a.headline,a.summary].join(" ")));return <main className="wrap listingPage"><p className="eyebrow">NEWS DESK / EVENTS</p><h1>Events and gatherings</h1><p className="standfirst">News coverage of public events, festivals, conferences and major gatherings.</p><div className="listingGrid">{articles.map(a=><article key={a.id}><div className="storyMeta"><span>{a.category_name||"Events"}</span></div><h2><Link href={`/news/${a.slug}`}>{a.headline}</Link></h2><p>{a.summary}</p></article>)}</div>{!articles.length&&<p className="emptyLatest">No event coverage is available yet.</p>}</main>}
