@@ -77,48 +77,6 @@ export async function GET(request: NextRequest) {
     } catch { failed++; }
   }
 
-  // Automatic publication is deliberately limited to exact-title matches from at least two distinct publisher domains.
-  const pendingResponse = await db("discovered_news?select=id,source_id,title,url,summary,country_code,suggested_category,duplicate_group,draft_headline,draft_summary&status=eq.needs_review&limit=5000");
-  if (pendingResponse.ok) {
-    const pending = await pendingResponse.json() as Discovery[];
-    const groups = new Map<string, Discovery[]>();
-    for (const item of pending) {
-      if (!item.duplicate_group || !/^https?:\/\//i.test(item.url)) continue;
-      const group = groups.get(item.duplicate_group) ?? [];
-      group.push(item); groups.set(item.duplicate_group, group);
-    }
-    for (const group of groups.values()) {
-      const byDomain = new Map<string, Discovery>();
-      for (const item of group) {
-        try {
-          const domain = new URL(item.url).hostname.toLowerCase().replace(/^www\./, "");
-          if (!byDomain.has(domain)) byDomain.set(domain, item);
-        } catch { /* Ignore invalid source URLs. */ }
-      }
-      const supporting = [...byDomain.values()];
-      if (supporting.length < 2) continue;
-      const primary = supporting[0];
-      const headline = primary.draft_headline || primary.title;
-      let slug = slugify(headline);
-      const existing = await db(`articles?select=id&slug=eq.${encodeURIComponent(slug)}&limit=1`);
-      if (existing.ok && (await existing.json()).length) slug = `${slug}-${primary.id.slice(0, 6)}`;
-      const sourceIds = [...new Set(supporting.map((x) => x.source_id).filter((x): x is string => Boolean(x)))];
-      if (sourceIds.length < 2) continue;
-      const summary = primary.draft_summary || primary.summary || "Multiple independent publishers have reported this story. Follow the original reports for developing details.";
-      const body = [`## Latest report\n\n${summary}`, "## Independent sources\n\nThis report was matched across at least two distinct publisher domains. Details may develop; consult the original reports linked below."].join("\n\n");
-      const create = await db("articles", { method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify({ slug, headline, summary, body_md: body, category_name: classifyCategory(primary.draft_headline || primary.title, primary.draft_summary || primary.summary || "", primary.suggested_category), country_name: primary.country_code || null, status: "published", published_at: new Date().toISOString(), source_count: supporting.length, seo_title: headline }) });
-      if (!create.ok) continue;
-      const article = (await create.json())[0];
-      const links = supporting.map((item) => ({ article_id: article.id, source_id: item.source_id, discovered_id: item.id, publisher_name: item.source_id ? (sourceNames.get(item.source_id) || "Original publisher") : "Original publisher", source_url: item.url }));
-      const linkResult = await db("article_sources", { method: "POST", headers: { Prefer: "return=minimal" }, body: JSON.stringify(links) });
-      if (!linkResult.ok) {
-        await db(`articles?id=eq.${article.id}`, { method: "PATCH", body: JSON.stringify({ status: "draft", published_at: null }) });
-        continue;
-      }
-      const ids = supporting.map((item) => item.id);
-      await db(`discovered_news?id=in.(${ids.join(",")})`, { method: "PATCH", headers: { Prefer: "return=minimal" }, body: JSON.stringify({ status: "published", verification_status: "corroborated", editorial_notes: "Automatically published after matching exact normalized headlines from at least two distinct publisher domains. This is source corroboration, not independent fact-checking." }) });
-      autoPublished++;
-    }
-  }
+  // Discovery only: never publish from RSS title matching alone. Editors must verify reporting and publish from the newsroom.
   return NextResponse.json({ ok: true, feeds_checked: feeds.length, discovered, skipped, failed, auto_published: autoPublished, note: "Only exact-title matches from at least two distinct publisher domains are auto-published. Single-source and unmatched stories remain in the editorial review queue." });
 }
