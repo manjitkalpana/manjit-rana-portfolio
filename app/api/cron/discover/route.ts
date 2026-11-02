@@ -78,5 +78,5 @@ export async function GET(request: NextRequest) {
   }
 
   // Discovery only: never publish from RSS title matching alone. Editors must verify reporting and publish from the newsroom.
-  return NextResponse.json({ ok: true, feeds_checked: feeds.length, discovered, skipped, failed, auto_published: autoPublished, note: "Only exact-title matches from at least two distinct publisher domains are auto-published. Single-source and unmatched stories remain in the editorial review queue." });
+  return NextResponse.json({ ok: true, feeds_checked: feeds.length, discovered, skipped, failed, auto_published: autoPublished, note: "RSS discoveries are saved for editorial review only. No story is auto-published; an editor must verify the original reports and publish manually." });
 }
